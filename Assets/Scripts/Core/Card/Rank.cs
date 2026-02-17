@@ -1,4 +1,4 @@
-namespace Tichu.Core.Card
+namespace Core.Card
 {
     public enum Rank
     {

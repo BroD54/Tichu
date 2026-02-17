@@ -1,14 +1,14 @@
 using NUnit.Framework;
-using Tichu.Core.Card;
+using Core.Card;
 
 public class CardTest
 {
     [Test]
-    public void testConstructor()
+    public void TestConstructor()
     {
         var card = new Card(Rank.Ace, Suit.Jade);
 
-        Assert.AreEqual(Rank.Ace, card.rank);
-        Assert.AreEqual(Suit.Jade, card.suit);
+        Assert.AreEqual(Rank.Ace, card.Rank);
+        Assert.AreEqual(Suit.Jade, card.Suit);
     }
 }

@@ -1,13 +1,13 @@
-namespace Tichu.Core.Card {
+namespace Core.Card {
     public class Card
     {
-        public Rank rank { get; }
-        public Suit suit { get; }
+        public Rank Rank { get; }
+        public Suit Suit { get; }
 
         public Card(Rank rank, Suit suit)
         {
-            this.rank = rank;
-            this.suit = suit;
+            this.Rank = rank;
+            this.Suit = suit;
         }
     }
 
