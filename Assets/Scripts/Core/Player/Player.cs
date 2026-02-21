@@ -1,7 +1,40 @@
-﻿namespace Core.Player
+﻿using System.Collections.Generic;
+
+namespace Core.Player
 {
+    using Card;
+    
     public abstract class Player
     {
-        
+        public string Name { get; }
+        public List<Card> Hand { get; private set; }
+        public List<List<Card>> TricksWon { get; private set; }
+        public bool DeclaredTichu { get; private set; }
+        public bool DeclaredGrandTichu { get; private set; }
+
+        protected Player(string name)
+        {
+            Name = name;
+            Hand = new List<Card>();
+            TricksWon = new List<List<Card>>();
+            DeclaredTichu = false;
+            DeclaredGrandTichu = false;
+        }
+
+        public void ReceiveCards(List<Card> cards)
+        {
+            foreach (var card in cards)
+            {
+                Hand.Add(card);
+            }
+        }
+
+        public void RemoveCards(List<Card> cards)
+        {
+            foreach (var card in cards)
+            {
+                Hand.Remove(card);
+            }
+        }
     }
 }

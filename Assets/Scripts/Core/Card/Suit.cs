@@ -5,6 +5,7 @@ namespace Core.Card
         Jade,
         Sword,
         Pagoda,
-        Star
+        Star,
+        Suitless
     }
 }
