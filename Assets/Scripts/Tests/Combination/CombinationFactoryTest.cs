@@ -38,7 +38,7 @@ namespace Tests.Combination
         {
             List<Card> cards = new List<Card>
             {
-                new (Suit.None, CardType.Standard),
+                new (Suit.None, CardType.Dog),
             };
             
             Combination combination = CombinationFactory.Create(cards);
