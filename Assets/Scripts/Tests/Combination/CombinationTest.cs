@@ -26,9 +26,45 @@ namespace Tests.Combination
         }
 
         [Test]
-        public void TestBeats()
+        public void TestAceBeatsKing()
         {
-            Assert.False(true);
+            Card ace = new Card(Rank.Ace, Suit.Jade,  CardType.Standard);
+            Card king = new Card(Rank.King, Suit.Jade,  CardType.Standard);
+
+            Combination aceSingle = new Combination(CombinationType.Single, new List<Card> { ace }, 14);
+            Combination kingSingle = new Combination(CombinationType.Single, new List<Card> { king }, 13);
+            
+            Assert.True(aceSingle.Beats(kingSingle));
+        }
+        
+        [Test]
+        public void TestDragonBeatsAce()
+        {
+            Card ace = new Card(Rank.Ace, Suit.Jade,  CardType.Standard);
+            Card dragon = new Card(Rank.Dragon, Suit.None,  CardType.Dragon);
+
+            Combination aceSingle = new Combination(CombinationType.Single, new List<Card> { ace }, 14);
+            Combination dragonSingle = new Combination(CombinationType.Single, new List<Card> { dragon }, 15);
+            
+            Assert.True(dragonSingle.Beats(aceSingle));
+        }
+        
+        [Test]
+        public void TestPairOnSingle()
+        {
+            Combination pair = new Combination(CombinationType.Pair, new List<Card> (), 14);
+            Combination single = new Combination(CombinationType.Single, new List<Card> (), 13);
+            
+            Assert.False(pair.Beats(single));
+        }
+        
+        [Test]
+        public void TestBombBeatsBomb()
+        {
+            Combination highBomb = new Combination(CombinationType.StraightFlush, new List<Card> (), 14);
+            Combination lowBomb = new Combination(CombinationType.StraightFlush, new List<Card> (), 13);
+            
+            Assert.True(highBomb.Beats(lowBomb));
         }
     }
 }
