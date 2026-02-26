@@ -3,6 +3,7 @@
 namespace Core.Player
 {
     using Card;
+    using Game;
     
     public abstract class Player
     {
@@ -36,5 +37,7 @@ namespace Core.Player
                 Hand.Remove(card);
             }
         }
+        
+        public abstract Move MakeMove(GameState state);
     }
 }

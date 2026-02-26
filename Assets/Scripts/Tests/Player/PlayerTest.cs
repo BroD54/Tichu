@@ -31,9 +31,9 @@ namespace Tests.Player
         {
             var cards = new List<Card>
             {
-                new (Rank.Ace, Suit.Jade), 
-                new (Rank.Dog, Suit.Suitless), 
-                new (Rank.Eight, Suit.Star)
+                new (Rank.Ace, Suit.Jade, CardType.Standard), 
+                new (Suit.None, CardType.Dog), 
+                new (Rank.Eight, Suit.Star, CardType.Standard)
             };
             
             _player.ReceiveCards(cards);
@@ -46,22 +46,15 @@ namespace Tests.Player
         {
             var cards = new List<Card>
             {
-                new (Rank.Ace, Suit.Jade), 
-                new (Rank.Dog, Suit.Suitless), 
-                new (Rank.Eight, Suit.Star)
+                new (Rank.Ace, Suit.Jade, CardType.Standard), 
+                new (Suit.None, CardType.Dog), 
+                new (Rank.Eight, Suit.Star, CardType.Standard)
             };
             
             _player.ReceiveCards(cards);
             _player.RemoveCards(cards);
             
             Assert.IsEmpty(_player.Hand);
-        }
-
-        [Test]
-        public void TestMakeMove()
-        {
-            // Implement after GameState
-            Assert.IsTrue(false);
         }
     }
 }
