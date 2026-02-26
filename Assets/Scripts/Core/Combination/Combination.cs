@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Core.Game
+namespace Core.Combination
 {
     using Card;
     public class Combination

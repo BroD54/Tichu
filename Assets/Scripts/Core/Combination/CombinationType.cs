@@ -1,4 +1,4 @@
-﻿namespace Core.Game
+﻿namespace Core.Combination
 {
     public enum CombinationType
     {
