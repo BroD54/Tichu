@@ -17,6 +17,7 @@ namespace Core.Combination
 
             if (IsSingle(cards)) return CreateSingle(cards);
             if (IsPair(cards)) return CreatePair(cards);
+            if (IsTriple(cards)) return CreateTriple(cards);
 
             return null;
         }
@@ -80,6 +81,40 @@ namespace Core.Combination
             else strength = (int)second.Rank.Value;
             
             return new Combination(CombinationType.Pair, cards, strength);
+        }
+        
+        private static bool IsTriple(List<Card> cards)
+        {
+            if (cards.Count != 3) return false;
+
+            var first = cards[0];
+            var second = cards[1];
+            var third = cards[2];
+            
+            if (cards.Any(card => card.IsDragon || card.IsDog || card.IsMahjong)) return false;
+            if (cards.Any(card => card.IsPhoenix))
+            {
+                return first.Rank == second.Rank || first.Rank == third.Rank || second.Rank == third.Rank;
+            }
+
+            return first.Rank == second.Rank && first.Rank == third.Rank;
+        }
+        
+        [CanBeNull]
+        private static Combination CreateTriple(List<Card>  cards)
+        {
+            if (cards.Count != 3) return null;
+            
+            var first = cards[0];
+            var second = cards[1];
+            var third = cards[2];
+
+            int strength;
+
+            if (first.Rank != null) strength = (int)first.Rank.Value;
+            else strength = (int)second.Rank.Value;
+            
+            return new Combination(CombinationType.Triple, cards, strength);
         }
         
     }

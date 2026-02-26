@@ -76,6 +76,38 @@ namespace Tests.Combination
             Assert.AreEqual(combination.Type, CombinationType.Pair);
             Assert.AreEqual(combination.Strength, 13);
         }
+        
+        [Test]
+        public void TestCreateTriple()
+        {
+            List<Card> cards = new List<Card>
+            {
+                new (Rank.Eight, Suit.Jade, CardType.Standard),
+                new (Rank.Eight, Suit.Pagoda, CardType.Standard),
+                new (Rank.Eight, Suit.Star, CardType.Standard),
+            };
+            
+            Combination combination = CombinationFactory.Create(cards);
+            
+            Assert.AreEqual(combination.Type, CombinationType.Triple);
+            Assert.AreEqual(combination.Strength, 8);
+        }
+        
+        [Test]
+        public void TestCreateTriplePhoenix()
+        {
+            List<Card> cards = new List<Card>
+            {
+                new (Rank.Two, Suit.Jade, CardType.Standard),
+                new (Rank.Two, Suit.Star, CardType.Standard),
+                new (Suit.None,  CardType.Phoenix),
+            };
+            
+            Combination combination = CombinationFactory.Create(cards);
+            
+            Assert.AreEqual(combination.Type, CombinationType.Triple);
+            Assert.AreEqual(combination.Strength, 2);
+        }
 
         [Test]
         public void TestBeats()
