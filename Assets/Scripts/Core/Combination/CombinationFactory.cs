@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Codice.CM.Common;
 using JetBrains.Annotations;
 
 namespace Core.Combination
@@ -8,6 +9,11 @@ namespace Core.Combination
     
     public static class CombinationFactory
     {
+        private const int SINGLE_COUNT = 1;
+        private const int PAIR_COUNT = 2;
+        private const int TRIPLE_COUNT = 3;
+        private const int FULL_HOUSE_COUNT = 5;
+        
         [CanBeNull]
         public static Combination Create(List<Card> cards)
         {
@@ -18,19 +24,20 @@ namespace Core.Combination
             if (IsSingle(cards)) return CreateSingle(cards);
             if (IsPair(cards)) return CreatePair(cards);
             if (IsTriple(cards)) return CreateTriple(cards);
+            if (IsFullHouse(cards)) return CreateFullHouse(cards);
 
             return null;
         }
 
         private static bool IsSingle(List<Card> cards)
         {
-            return cards.Count == 1;
+            return cards.Count == SINGLE_COUNT;
         }
 
         [CanBeNull]
         private static Combination CreateSingle(List<Card>  cards)
         {
-            if (cards.Count != 1) return null;
+            if (cards.Count != SINGLE_COUNT) return null;
             
             var card = cards[0];
 
@@ -56,7 +63,7 @@ namespace Core.Combination
         
         private static bool IsPair(List<Card> cards)
         {
-            if (cards.Count != 2) return false;
+            if (cards.Count != PAIR_COUNT) return false;
 
             var first = cards[0];
             var second = cards[1];
@@ -70,7 +77,7 @@ namespace Core.Combination
         [CanBeNull]
         private static Combination CreatePair(List<Card>  cards)
         {
-            if (cards.Count != 2) return null;
+            if (cards.Count != PAIR_COUNT) return null;
             
             var first = cards[0];
             var second = cards[1];
@@ -85,7 +92,7 @@ namespace Core.Combination
         
         private static bool IsTriple(List<Card> cards)
         {
-            if (cards.Count != 3) return false;
+            if (cards.Count != TRIPLE_COUNT) return false;
 
             var first = cards[0];
             var second = cards[1];
@@ -103,11 +110,10 @@ namespace Core.Combination
         [CanBeNull]
         private static Combination CreateTriple(List<Card>  cards)
         {
-            if (cards.Count != 3) return null;
+            if (cards.Count != TRIPLE_COUNT) return null;
             
             var first = cards[0];
             var second = cards[1];
-            var third = cards[2];
 
             int strength;
 
@@ -117,5 +123,59 @@ namespace Core.Combination
             return new Combination(CombinationType.Triple, cards, strength);
         }
         
+        private static bool IsFullHouse(List<Card> cards)
+        {
+            if (cards.Count != FULL_HOUSE_COUNT) return false;
+            
+            if (cards.Any(card => card.IsDragon || card.IsDog || card.IsMahjong)) return false;
+
+            var standardCards = cards.Where(card => card.Type == CardType.Standard).ToList();
+            var groups = standardCards
+                .GroupBy(card => card.Rank)
+                .Select(group => group.Count())
+                .OrderByDescending(card => card)
+                .ToList();
+
+            if (!cards.Any(card => card.IsPhoenix))
+            {
+                return groups.SequenceEqual(new List<int> {TRIPLE_COUNT, PAIR_COUNT});
+            }
+
+            var fullHouseGroupCount = 2;
+            
+            if (groups.Count == fullHouseGroupCount)
+            {
+                if (groups[0] == TRIPLE_COUNT && groups[1] == SINGLE_COUNT) return true;
+                if (groups[0] == PAIR_COUNT && groups[1] == PAIR_COUNT) return true;
+            }
+
+            return false;
+        }
+
+        [CanBeNull]
+        private static Combination CreateFullHouse(List<Card> cards)
+        {
+            var standardCards = cards.Where(card => card.Type == CardType.Standard);
+            var containsPhoenix = cards.Any(card => card.IsPhoenix);
+
+            var groups = standardCards
+                .GroupBy(card => card.Rank)
+                .OrderByDescending(group => group.Key!.Value)
+                .ToList();
+
+            Rank tripleRank;
+            if (!containsPhoenix)
+            {
+                tripleRank = groups.First(group => group.Count() == TRIPLE_COUNT).Key!.Value;
+            }
+            else
+            {
+                tripleRank = groups[0].Key!.Value;
+            }
+
+            int strength = (int)tripleRank;
+            
+            return new Combination(CombinationType.FullHouse, cards, strength);
+        }
     }
 }

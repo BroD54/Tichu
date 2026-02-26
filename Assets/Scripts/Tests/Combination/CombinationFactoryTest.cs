@@ -110,10 +110,39 @@ namespace Tests.Combination
         }
 
         [Test]
-        public void TestBeats()
+        public void TestCreateFullHouse()
         {
-            // Not Implemented
-            Assert.False(true);
+            List<Card> cards = new List<Card>
+            {
+                new (Rank.Two, Suit.Jade, CardType.Standard),
+                new (Rank.Two, Suit.Star, CardType.Standard),
+                new (Rank.Two, Suit.Sword, CardType.Standard),
+                new (Rank.King, Suit.Sword, CardType.Standard),
+                new (Rank.King, Suit.Sword, CardType.Standard),
+            };
+            
+            Combination combination = CombinationFactory.Create(cards);
+            
+            Assert.AreEqual(combination.Type, CombinationType.FullHouse);
+            Assert.AreEqual(combination.Strength, 2);
+        }
+        
+        [Test]
+        public void TestCreateFullHousePhoenix()
+        {
+            List<Card> cards = new List<Card>
+            {
+                new (Rank.Two, Suit.Jade, CardType.Standard),
+                new (Rank.Two, Suit.Star, CardType.Standard),
+                new (Suit.None, CardType.Phoenix),
+                new (Rank.King, Suit.Sword, CardType.Standard),
+                new (Rank.King, Suit.Pagoda, CardType.Standard),
+            };
+            
+            Combination combination = CombinationFactory.Create(cards);
+            
+            Assert.AreEqual(combination.Type, CombinationType.FullHouse);
+            Assert.AreEqual(combination.Strength, 13);
         }
     }
 }
