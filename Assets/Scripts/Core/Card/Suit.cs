@@ -6,6 +6,6 @@ namespace Core.Card
         Sword,
         Pagoda,
         Star,
-        Suitless
+        None
     }
 }

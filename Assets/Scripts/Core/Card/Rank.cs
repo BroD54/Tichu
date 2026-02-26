@@ -2,7 +2,8 @@ namespace Core.Card
 {
     public enum Rank
     {
-        Two,
+        Mahjong = 1,
+        Two = 2,
         Three,
         Four,
         Five,
@@ -15,9 +16,6 @@ namespace Core.Card
         Queen,
         King,
         Ace,
-        Mahjong,
-        Dog,
-        Phoenix,
         Dragon
     }
 }
