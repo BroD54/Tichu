@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Codice.CM.Common;
 using JetBrains.Annotations;
@@ -13,6 +14,7 @@ namespace Core.Combination
         private const int PAIR_COUNT = 2;
         private const int TRIPLE_COUNT = 3;
         private const int FULL_HOUSE_COUNT = 5;
+        private const int STRAIGHT_MINIMIMUM_COUNT = 5;
         
         [CanBeNull]
         public static Combination Create(List<Card> cards)
@@ -25,6 +27,7 @@ namespace Core.Combination
             if (IsPair(cards)) return CreatePair(cards);
             if (IsTriple(cards)) return CreateTriple(cards);
             if (IsFullHouse(cards)) return CreateFullHouse(cards);
+            if (IsStraight(cards)) return CreateStraight(cards);
 
             return null;
         }
@@ -133,7 +136,7 @@ namespace Core.Combination
             var groups = standardCards
                 .GroupBy(card => card.Rank)
                 .Select(group => group.Count())
-                .OrderByDescending(card => card)
+                .OrderByDescending(count => count)
                 .ToList();
 
             if (!cards.Any(card => card.IsPhoenix))
@@ -176,6 +179,71 @@ namespace Core.Combination
             int strength = (int)tripleRank;
             
             return new Combination(CombinationType.FullHouse, cards, strength);
+        }
+        
+        private static bool IsStraight(List<Card> cards)
+        {
+            if (cards.Count < STRAIGHT_MINIMIMUM_COUNT) return false;
+            
+            if (cards.Any(card => card.IsDragon || card.IsDog)) return false;
+
+            var straightCards = cards.Where(card => card.Type is CardType.Standard or CardType.Mahjong).ToList();
+            var orderedRanks = straightCards
+                .GroupBy(card => card.Rank)
+                .Select(group => group.Key!.Value)
+                .OrderBy(rank => rank)
+                .ToList();
+
+            if (orderedRanks.Count != straightCards.Count) return false;
+            
+            int totalGaps = 0;
+            for(int i = 1; i < orderedRanks.Count; i++)
+            {
+                totalGaps += orderedRanks[i] - orderedRanks[i - 1] - 1;
+            }
+
+            var phoenixCount = cards.Any(card => card.IsPhoenix) ? 1 : 0;
+            return totalGaps <= phoenixCount;
+        }
+
+        [CanBeNull]
+        private static Combination CreateStraight(List<Card> cards)
+        {
+            var standardCards = cards.Where(card => card.Type == CardType.Standard).ToList();
+            var containsPhoenix = cards.Any(card => card.IsPhoenix);
+
+            var orderedRanks = standardCards
+                .GroupBy(card => card.Rank)
+                .Select(group => group.Key!.Value)
+                .OrderByDescending(rank => rank)
+                .ToList();
+
+            int strength;
+            
+            if (!containsPhoenix)
+            {
+                strength = (int)orderedRanks[0];
+            }
+            else
+            {
+                int totalGaps = 0;
+                for(int i = 1; i < orderedRanks.Count; i++)
+                {
+                    totalGaps += orderedRanks[i - 1] - orderedRanks[i] - 1;
+                }
+
+                bool canPhoenixExtendStraight = totalGaps == 0;
+                if (canPhoenixExtendStraight)
+                {
+                    strength = Math.Min((int)orderedRanks[0] + 1, (int)Rank.Ace);
+                }
+                else
+                {
+                    strength = (int)orderedRanks[0];
+                }
+            }
+            
+            return new Combination(CombinationType.Straight, cards, strength);
         }
     }
 }

@@ -144,5 +144,65 @@ namespace Tests.Combination
             Assert.AreEqual(combination.Type, CombinationType.FullHouse);
             Assert.AreEqual(combination.Strength, 13);
         }
+        
+        [Test]
+        public void TestCreateFiveStraight()
+        {
+            List<Card> cards = new List<Card>
+            {
+                new (Rank.Mahjong, Suit.Jade, CardType.Mahjong),
+                new (Rank.Two, Suit.Star, CardType.Standard),
+                new (Rank.Three, Suit.Star, CardType.Standard),
+                new (Rank.Four, Suit.Sword, CardType.Standard),
+                new (Rank.Five, Suit.Pagoda, CardType.Standard),
+            };
+            
+            Combination combination = CombinationFactory.Create(cards);
+            
+            Assert.AreEqual(combination.Type, CombinationType.Straight);
+            Assert.AreEqual(combination.Strength, 5);
+        }
+        
+        [Test]
+        public void TestCreateEightStraightPhoenix()
+        {
+            List<Card> cards = new List<Card>
+            {
+                new (Rank.Two, Suit.Star, CardType.Standard),
+                new (Rank.Three, Suit.Star, CardType.Standard),
+                new (Rank.Four, Suit.Sword, CardType.Standard),
+                new (Suit.None, CardType.Phoenix),
+                new (Rank.Six, Suit.Star, CardType.Standard),
+                new (Rank.Seven, Suit.Star, CardType.Standard),
+                new (Rank.Eight, Suit.Sword, CardType.Standard),
+                new (Rank.Nine, Suit.Pagoda, CardType.Standard),
+            };
+            
+            Combination combination = CombinationFactory.Create(cards);
+            
+            Assert.AreEqual(combination.Type, CombinationType.Straight);
+            Assert.AreEqual(combination.Strength, 9);
+        }
+        
+        [Test]
+        public void TestCreateEightStraightPhoenixExtends()
+        {
+            List<Card> cards = new List<Card>
+            {
+                new (Rank.Two, Suit.Star, CardType.Standard),
+                new (Rank.Three, Suit.Star, CardType.Standard),
+                new (Rank.Four, Suit.Sword, CardType.Standard),
+                new (Rank.Five, Suit.Sword, CardType.Standard),
+                new (Rank.Six, Suit.Star, CardType.Standard),
+                new (Rank.Seven, Suit.Star, CardType.Standard),
+                new (Rank.Eight, Suit.Sword, CardType.Standard),
+                new (Suit.None, CardType.Phoenix),
+            };
+            
+            Combination combination = CombinationFactory.Create(cards);
+            
+            Assert.AreEqual(combination.Type, CombinationType.Straight);
+            Assert.AreEqual(combination.Strength, 9);
+        }
     }
 }
