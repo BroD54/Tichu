@@ -25,6 +25,11 @@ namespace Core.Combination
             
             if (Type != other.Type) return false;
             
+            if (Type is CombinationType.Straight or CombinationType.StraightPairs)
+            {
+                if (Cards.Count != other.Cards.Count) return false;
+            }
+            
             return Strength > other.Strength;
         }
 

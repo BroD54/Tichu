@@ -66,5 +66,33 @@ namespace Tests.Combination
             
             Assert.True(highBomb.Beats(lowBomb));
         }
+        
+        [Test]
+        public void TestFiveStraightBeatsSixStraight()
+        {
+            List<Card> fiveStraightCards = new List<Card>
+            {
+                new(Rank.Ace, Suit.Jade, CardType.Standard),
+                new(Rank.King, Suit.Jade, CardType.Standard),
+                new(Rank.Queen, Suit.Jade, CardType.Standard),
+                new(Rank.Jack, Suit.Star, CardType.Standard),
+                new(Rank.Ten, Suit.Jade, CardType.Standard),
+                new(Rank.Nine, Suit.Jade, CardType.Standard),
+            };
+            
+            List<Card> sixStraightCards = new List<Card>
+            {
+                new(Rank.King, Suit.Jade, CardType.Standard),
+                new(Rank.Queen, Suit.Jade, CardType.Standard),
+                new(Rank.Jack, Suit.Star, CardType.Standard),
+                new(Rank.Ten, Suit.Jade, CardType.Standard),
+                new(Rank.Nine, Suit.Jade, CardType.Standard),
+            };
+            
+            Combination fiveStraight = new Combination(CombinationType.Straight, fiveStraightCards, 14);
+            Combination sixStraight = new Combination(CombinationType.Straight, sixStraightCards, 13);
+            
+            Assert.False(fiveStraight.Beats(sixStraight));
+        }
     }
 }
