@@ -16,6 +16,7 @@ namespace Core.Combination
         private const int FULL_HOUSE_COUNT = 5;
         private const int STRAIGHT_MINIMIMUM_COUNT = 5;
         private const int STRAIGHT_PAIRS_MINIMUM_COUNT = 2;
+        private const int FOUR_KIND_COUNT = 4;
         
         [CanBeNull]
         public static Combination Create(List<Card> cards)
@@ -28,8 +29,10 @@ namespace Core.Combination
             if (IsPair(cards)) return CreatePair(cards);
             if (IsTriple(cards)) return CreateTriple(cards);
             if (IsFullHouse(cards)) return CreateFullHouse(cards);
+            if (IsStraightFlush(cards)) return CreateStraightFlush(cards);
             if (IsStraight(cards)) return CreateStraight(cards);
             if (IsStraightPairs(cards)) return CreateStraightPairs(cards);
+            if (IsFourKind(cards)) return CreateFourKind(cards);
                 
             return null;
         }
@@ -289,6 +292,47 @@ namespace Core.Combination
             
             int strength =  (int)orderedRanks[0];
             return new Combination(CombinationType.StraightPairs, cards, strength);
+        }
+
+        private static bool IsFourKind(List<Card> cards)
+        {
+            if (cards.Count != FOUR_KIND_COUNT) return false;
+            if (cards.Any(card => card.IsDragon || card.IsMahjong || card.IsDog || card.IsPhoenix)) return false;
+
+            var rank = cards[0].Rank;
+            return cards.All(card => card.Rank == rank);
+        }
+
+        [CanBeNull]
+        private static Combination CreateFourKind(List<Card> cards)
+        {
+            int strength = (int)cards[0].Rank!.Value;
+            return new Combination(CombinationType.FourKind, cards, strength);
+        }
+        
+        private static bool IsStraightFlush(List<Card> cards)
+        {
+            if (!IsStraight(cards)) return false;
+            if (cards.Any(card => card.IsPhoenix)) return false;
+            
+            var suit = cards[0].Suit;
+            return cards.All(card => card.Suit == suit);
+        }
+
+        [CanBeNull]
+        private static Combination CreateStraightFlush(List<Card> cards)
+        {
+            var standardCards = cards.Where(card => card.Type == CardType.Standard).ToList();
+
+            var orderedRanks = standardCards
+                .GroupBy(card => card.Rank)
+                .Select(group => group.Key!.Value)
+                .OrderByDescending(rank => rank)
+                .ToList();
+            var strength = (int)orderedRanks[0];
+            
+            
+            return new Combination(CombinationType.StraightFlush, cards, strength);
         }
     }
 }

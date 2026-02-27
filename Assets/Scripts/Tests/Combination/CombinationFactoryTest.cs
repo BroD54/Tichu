@@ -236,7 +236,43 @@ namespace Tests.Combination
             Combination combination = CombinationFactory.Create(cards);
             
             Assert.AreEqual(combination.Type, CombinationType.StraightPairs);
-            Assert.AreEqual(combination.Strength, 3);
+            Assert.AreEqual(combination.Strength, (int)Rank.Three);
+        }
+        
+        [Test]
+        public void TestCreateFourKind()
+        {
+            List<Card> cards = new List<Card>
+            {
+                new (Rank.King, Suit.Jade, CardType.Standard),
+                new (Rank.King, Suit.Star, CardType.Standard),
+                new (Rank.King, Suit.Sword, CardType.Standard),
+                new (Rank.King, Suit.Pagoda, CardType.Standard),
+            };
+            
+            Combination combination = CombinationFactory.Create(cards);
+            
+            Assert.AreEqual(combination.Type, CombinationType.FourKind);
+            Assert.AreEqual(combination.Strength, (int)Rank.King);
+        }
+        
+                
+        [Test]
+        public void TestStraightFlush()
+        {
+            List<Card> cards = new List<Card>
+            {
+                new (Rank.Two, Suit.Star, CardType.Standard),
+                new (Rank.Three, Suit.Star, CardType.Standard),
+                new (Rank.Four, Suit.Star, CardType.Standard),
+                new (Rank.Five, Suit.Star, CardType.Standard),
+                new (Rank.Six, Suit.Star, CardType.Standard),
+            };
+            
+            Combination combination = CombinationFactory.Create(cards);
+            
+            Assert.AreEqual(combination.Type, CombinationType.StraightFlush);
+            Assert.AreEqual(combination.Strength, (int)Rank.Six);
         }
     }
 }
