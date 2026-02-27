@@ -204,5 +204,39 @@ namespace Tests.Combination
             Assert.AreEqual(combination.Type, CombinationType.Straight);
             Assert.AreEqual(combination.Strength, 9);
         }
+        
+        [Test]
+        public void TestCreateTwoStraightPairs()
+        {
+            List<Card> cards = new List<Card>
+            {
+                new (Rank.Two, Suit.Jade, CardType.Standard),
+                new (Rank.Two, Suit.Star, CardType.Standard),
+                new (Rank.Three, Suit.Star, CardType.Standard),
+                new (Rank.Three, Suit.Sword, CardType.Standard),
+            };
+            
+            Combination combination = CombinationFactory.Create(cards);
+            
+            Assert.AreEqual(combination.Type, CombinationType.StraightPairs);
+            Assert.AreEqual(combination.Strength, 3);
+        }
+        
+        [Test]
+        public void TestCreateTwoStraightPairsPhoenix()
+        {
+            List<Card> cards = new List<Card>
+            {
+                new (Rank.Two, Suit.Jade, CardType.Standard),
+                new (Rank.Two, Suit.Star, CardType.Standard),
+                new (Rank.Three, Suit.Star, CardType.Standard),
+                new (Suit.None, CardType.Phoenix),
+            };
+            
+            Combination combination = CombinationFactory.Create(cards);
+            
+            Assert.AreEqual(combination.Type, CombinationType.StraightPairs);
+            Assert.AreEqual(combination.Strength, 3);
+        }
     }
 }

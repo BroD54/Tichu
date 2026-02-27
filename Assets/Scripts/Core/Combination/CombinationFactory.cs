@@ -15,6 +15,7 @@ namespace Core.Combination
         private const int TRIPLE_COUNT = 3;
         private const int FULL_HOUSE_COUNT = 5;
         private const int STRAIGHT_MINIMIMUM_COUNT = 5;
+        private const int STRAIGHT_PAIRS_MINIMUM_COUNT = 2;
         
         [CanBeNull]
         public static Combination Create(List<Card> cards)
@@ -28,7 +29,8 @@ namespace Core.Combination
             if (IsTriple(cards)) return CreateTriple(cards);
             if (IsFullHouse(cards)) return CreateFullHouse(cards);
             if (IsStraight(cards)) return CreateStraight(cards);
-
+            if (IsStraightPairs(cards)) return CreateStraightPairs(cards);
+                
             return null;
         }
 
@@ -244,6 +246,49 @@ namespace Core.Combination
             }
             
             return new Combination(CombinationType.Straight, cards, strength);
+        }
+
+        private static bool IsStraightPairs(List<Card> cards)
+        {
+            if (cards.Count % 2 != 0) return false;
+            
+            if (cards.Any(card => card.IsDragon || card.IsDog || card.IsMahjong)) return false;
+
+            var standardCards = cards.Where(card => card.Type == CardType.Standard).ToList();
+            var orderedRanks = standardCards
+                .GroupBy(card => card.Rank)
+                .Select(group => group.Key!.Value)
+                .OrderBy(rank => rank)
+                .ToList();
+
+            var expectedPairs = (int)Math.Ceiling(standardCards.Count / 2.0);
+            if (orderedRanks.Count != expectedPairs) return false;
+            if (expectedPairs < STRAIGHT_PAIRS_MINIMUM_COUNT) return false;
+            
+            for(int i = 1; i < orderedRanks.Count; i++)
+            {
+                var gap = orderedRanks[i] - orderedRanks[i - 1] - 1;
+                if (gap > 0) return false;
+            }
+ 
+            var incompletePairs = (standardCards.Count) - (expectedPairs * 2);
+            var phoenixCount = cards.Any(card => card.IsPhoenix) ? 1 : 0;
+            
+            return incompletePairs <= phoenixCount;
+        }
+
+        [CanBeNull]
+        private static Combination CreateStraightPairs(List<Card> cards)
+        {
+            var standardCards = cards.Where(card => card.Type == CardType.Standard).ToList();
+            var orderedRanks = standardCards
+                .GroupBy(card => card.Rank)
+                .Select(group => group.Key!.Value)
+                .OrderByDescending(rank => rank)
+                .ToList();
+            
+            int strength =  (int)orderedRanks[0];
+            return new Combination(CombinationType.StraightPairs, cards, strength);
         }
     }
 }
