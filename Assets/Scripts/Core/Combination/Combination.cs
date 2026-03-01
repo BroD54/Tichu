@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Codice.Client.BaseCommands.Merge;
 
 namespace Core.Combination
 {
@@ -27,8 +28,11 @@ namespace Core.Combination
 
             return BeatsSameType(other);
         }
-        
-        protected abstract bool BeatsSameType(Combination other);
+
+        protected virtual bool BeatsSameType(Combination other)
+        {
+            return Strength > other.Strength;
+        }
 
         protected virtual bool BeatsBomb(Combination other)
         {

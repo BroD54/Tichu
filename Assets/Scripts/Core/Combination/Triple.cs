@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using JetBrains.Annotations;
 
 namespace Core.Combination
 {
@@ -6,6 +8,7 @@ namespace Core.Combination
 
     public class Triple : Combination
     {
+        private const int TripleCount = 3;
         public override int Strength { get; }
         public override CombinationType Type => CombinationType.Triple;
 
@@ -14,12 +17,31 @@ namespace Core.Combination
         {
             Strength = strength;
         }
-
-        protected override bool BeatsSameType(Combination other)
+        
+        [CanBeNull]
+        public static Combination TryCreate(List<Card>  cards)
         {
-            var triple = (Triple)other;
+            if (!CombinationHelpers.HasCount(cards, TripleCount)) return null;
             
-            return Strength > triple.Strength;
+            var first = cards[0];
+            var second = cards[1];
+            var third = cards[2];
+            
+            if (CombinationHelpers.ContainsIllegalSpecial(cards)) return null;
+            if (CombinationHelpers.ContainsPhoenix(cards))
+            {
+                var isStandardCardsSameRank = first.Rank == second.Rank || first.Rank == third.Rank || second.Rank == third.Rank;
+                if (!isStandardCardsSameRank)
+                    return null;
+            }
+            else if (!CombinationHelpers.RanksEqual(cards)) return null;
+
+            int strength;
+
+            if (first.Rank != null) strength = (int)first.Rank.Value;
+            else strength = (int)second.Rank!.Value;
+            
+            return new Triple(cards, strength);
         }
     }
 }

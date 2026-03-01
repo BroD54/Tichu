@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using JetBrains.Annotations;
 
 namespace Core.Combination
 {
@@ -6,6 +8,7 @@ namespace Core.Combination
 
     public class Pair : Combination
     {
+        private const int PairCount = 2;
         public override int Strength { get; }
         public override CombinationType Type => CombinationType.Pair;
 
@@ -14,12 +17,24 @@ namespace Core.Combination
         {
             Strength = strength;
         }
-
-        protected override bool BeatsSameType(Combination other)
+        
+        [CanBeNull]
+        public static Combination TryCreate(List<Card>  cards)
         {
-            var pair = (Pair)other;
+            if (!CombinationHelpers.HasCount(cards, PairCount)) return null;
             
-            return Strength > pair.Strength;
+            var first = cards[0];
+            var second = cards[1];
+
+            if (CombinationHelpers.ContainsIllegalSpecial(cards)) return null;
+            if (!CombinationHelpers.ContainsPhoenix(cards) && !CombinationHelpers.RanksEqual(cards)) return null;
+            
+            int strength;
+
+            if (first.Rank != null) strength = (int)first.Rank.Value;
+            else strength = (int)second.Rank!.Value;
+            
+            return new Pair(cards, strength);
         }
     }
 }
