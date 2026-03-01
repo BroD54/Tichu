@@ -1,44 +1,42 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Codice.Client.BaseCommands.Merge;
 
 namespace Core.Combination
 {
     using Card;
-    public class Combination
-    {
-        public CombinationType Type { get; }
-        public List<Card> Cards { get; }
-        public int Strength { get; }
-        public bool IsBomb => Type is CombinationType.FourKind or CombinationType.StraightFlush;
+    public abstract class Combination
+    { 
+        public IReadOnlyList<Card> Cards { get; }
+        public abstract CombinationType Type { get; }
+        public abstract int Strength { get; }
+        public virtual bool IsBomb => false;
         
-        public Combination(CombinationType type, List<Card> cards, int strength)
+        protected Combination(List<Card> cards)
         {
-            Type = type;
-            Cards = cards;
-            Strength = strength;
+            Cards = cards.ToList().AsReadOnly();
         }
 
-        public bool Beats(Combination other) // Does not handle phoenix for Strength
+        public bool Beats(Combination other)
         {
+            if (other == null) return true;
             if (IsBomb && !other.IsBomb) return true;
             if (!IsBomb && other.IsBomb) return false;
-            if (IsBomb && other.IsBomb) return CompareBombs(other);
+            if (IsBomb && other.IsBomb) return BeatsBomb(other);
             
-            if (Type != other.Type) return false;
-            
-            if (Type is CombinationType.Straight or CombinationType.StraightPairs)
-            {
-                if (Cards.Count != other.Cards.Count) return false;
-            }
-            
+            if(Type != other.Type) return false;
+
+            return BeatsSameType(other);
+        }
+
+        protected virtual bool BeatsSameType(Combination other)
+        {
             return Strength > other.Strength;
         }
 
-        private bool CompareBombs(Combination other)
+        protected virtual bool BeatsBomb(Combination other)
         {
-            if (Type == CombinationType.FourKind && other.Type == CombinationType.StraightFlush) return false;
-            if (Type == CombinationType.StraightFlush && other.Type == CombinationType.FourKind) return true;
-
-            return Strength > other.Strength;
+            return false;
         }
     }
 }
