@@ -30,6 +30,9 @@ namespace Core.Combination
         
         protected abstract bool BeatsSameType(Combination other);
 
-        protected abstract bool BeatsBomb(Combination other);
+        protected virtual bool BeatsBomb(Combination other)
+        {
+            return false;
+        }
     }
 }
