@@ -7,7 +7,7 @@
         public int Id { get; }
         public Player Player1 { get; }
         public Player Player2 { get; }
-        public int Score { get; set; }
+        public int Score { get; private set; }
 
         public Team(int id, Player player1, Player player2)
         {
