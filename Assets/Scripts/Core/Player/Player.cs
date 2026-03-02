@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Core.Player
 {
@@ -12,6 +13,8 @@ namespace Core.Player
         public List<List<Card>> TricksWon { get; private set; }
         public bool DeclaredTichu { get; private set; }
         public bool DeclaredGrandTichu { get; private set; }
+        
+        public bool HasMahjong => Hand.Any(card =>  card.IsMahjong);
 
         protected Player(string name)
         {
@@ -38,6 +41,6 @@ namespace Core.Player
             }
         }
         
-        public abstract Move MakeMove(GameState state);
+        public abstract Move MakeMove(Round currentRound);
     }
 }

@@ -46,7 +46,7 @@ namespace Core.Game
             return true;
         }
 
-        public bool IsFinished()
+        private bool IsFinished()
         {
             if (_moves.Count == 0) return false;
 

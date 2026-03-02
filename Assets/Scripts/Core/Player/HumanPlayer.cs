@@ -16,7 +16,7 @@
             _pendingMove = move;
         }
 
-        public override Move MakeMove(GameState state)
+        public override Move MakeMove(Round currentRound)
         {
             return _pendingMove;
         }
