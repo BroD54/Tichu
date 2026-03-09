@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using JetBrains.Annotations;
 
@@ -40,7 +41,7 @@ namespace Core.Game
                     DealFirstEightCards();
                     break;
                 case RoundPhase.GrandTichuCalls:
-                    // 
+                    HandleGrandTichuCalls();
                     break;
                 case RoundPhase.DealingRemainingCards:
                     DealRemainingCards();
@@ -56,6 +57,11 @@ namespace Core.Game
                 case RoundPhase.Scoring:
                     //
                     break;
+                case RoundPhase.Finished:
+                    //
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(next), next, null);
             }
         }
 
@@ -87,10 +93,15 @@ namespace Core.Game
             CurrentPlayerIndex = (CurrentPlayerIndex + 1) % Players.Count;
         }
 
-        public void StartNewTrick(Player leader)
+        private void StartNewTrick(Player leader)
         {
             CurrentTrick = new Trick(leader, new List<Move>());
             CurrentPlayerIndex = Players.IndexOf(leader);
+        }
+
+        private void HandleGrandTichuCalls()
+        {
+            
         }
 
     }

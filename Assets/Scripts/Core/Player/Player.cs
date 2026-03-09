@@ -40,7 +40,18 @@ namespace Core.Player
                 Hand.Remove(card);
             }
         }
-        
+
+        public void DeclareGrandTichu(Round currentRound)
+        {
+            if (currentRound.Phase is RoundPhase.DealingFirstCards or RoundPhase.CardExchange)
+            DeclaredGrandTichu = true;
+        }
+
+        public void DeclareTichu()
+        {
+            DeclaredTichu = true;
+        }
+
         public abstract Move MakeMove(Round currentRound);
     }
 }
