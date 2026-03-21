@@ -52,45 +52,29 @@ namespace Core.Round
         {
             return _currentState as T;
         }
-
-        // private void DealFirstEightCards()
-        // {
-        //     Deck.Deal(Players, Deck.FirstDealCount);
-        // }
-        //
-        // private void DealRemainingCards()
-        // {
-        //     Deck.Deal(Players, Deck.SecondDealCount);
-        // }
-        //
-        //
-        // public bool ApplyMove(Move move)
-        // {
-        //     if (move.Player != Players[CurrentPlayerIndex]) return false;
-        //
-        //     var isLegalMove = CurrentTrick!.TryAddMove(move);
-        //     if  (!isLegalMove) return false;
-        //
-        //     AdvanceTurn();
-        //     
-        //     return true;
-        // }
-        //
-        // private void AdvanceTurn()
-        // {
-        //     CurrentPlayerIndex = (CurrentPlayerIndex + 1) % Players.Count;
-        // }
-        //
-        // private void StartNewTrick(Player leader)
-        // {
-        //     CurrentTrick = new Trick(leader, new List<Move>());
-        //     CurrentPlayerIndex = Players.IndexOf(leader);
-        // }
-        //
-        // private void HandleGrandTichuCalls()
-        // {
-        //     
-        // }
+        
+        public bool ApplyMove(Move move)
+        {
+            if (move.Player != Players[CurrentPlayerIndex]) return false;
+        
+            var isLegalMove = CurrentTrick!.TryAddMove(move);
+            if  (!isLegalMove) return false;
+        
+            AdvanceTurn();
+            
+            return true;
+        }
+        
+        private void AdvanceTurn()
+        {
+            CurrentPlayerIndex = (CurrentPlayerIndex + 1) % Players.Count;
+        }
+        
+        private void StartNewTrick(Player leader)
+        {
+            CurrentTrick = new Trick(leader, new List<Move>());
+            CurrentPlayerIndex = Players.IndexOf(leader);
+        }
 
     }
 }

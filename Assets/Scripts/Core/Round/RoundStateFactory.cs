@@ -12,6 +12,7 @@ namespace Core.Round
             RoundPhase.DealingRemainingCards => new DealRemainingCardsState(),
             RoundPhase.CardExchange => new CardsExchangeState(),
             RoundPhase.Scoring => new ScoringState(),
+            RoundPhase.Finished => new FinishedState(),
             _ => throw new ArgumentException()
         };
 }
