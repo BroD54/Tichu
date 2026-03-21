@@ -1,6 +1,7 @@
 ﻿namespace Core.Player
 {
     using Game;
+    using Round;
     
     public class HumanPlayer : Player
     {

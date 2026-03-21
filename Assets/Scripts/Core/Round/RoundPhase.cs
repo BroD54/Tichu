@@ -1,4 +1,4 @@
-﻿namespace Core.Game
+namespace Core.Round
 {
     public enum RoundPhase
     {

@@ -5,6 +5,7 @@ namespace Core.Player
 {
     using Card;
     using Game;
+    using Round;
     
     public abstract class Player
     {
@@ -41,11 +42,11 @@ namespace Core.Player
             }
         }
 
-        public void DeclareGrandTichu(Round currentRound)
-        {
-            if (currentRound.Phase is RoundPhase.DealingFirstCards or RoundPhase.CardExchange)
-            DeclaredGrandTichu = true;
-        }
+        // public void DeclareGrandTichu(Round currentRound)
+        // {
+        //     if (currentRound.Phase is RoundPhase.DealingFirstCards or RoundPhase.CardExchange)
+        //         DeclaredGrandTichu = true;
+        // }
 
         public void DeclareTichu()
         {
