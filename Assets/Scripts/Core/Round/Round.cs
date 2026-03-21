@@ -32,14 +32,15 @@ namespace Core.Round
 
             CurrentTrick = null;
             
-            // TransitionTo(RoundPhase.DealingFirstCards);
+            _currentState = RoundStateFactory.Create(RoundPhase.DealingFirstCards);
+            _currentState.OnEnter(this);
         }
 
         public void TransitionToNext()
         {
-            // _currentState?.OnExit(this);
-            // _currentState = nextState;
-            // _currentState.OnExit(this);
+            _currentState.OnExit(this);
+            _currentState = _currentState.NextState();
+            _currentState.OnEnter(this);
         }
 
         public bool IsInState<T>() where T : IRoundState
