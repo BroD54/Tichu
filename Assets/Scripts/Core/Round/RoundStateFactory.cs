@@ -11,6 +11,7 @@ namespace Core.Round
             RoundPhase.GrandTichuCalls => new GrandTichuCallsState(),
             RoundPhase.DealingRemainingCards => new DealRemainingCardsState(),
             RoundPhase.CardExchange => new CardsExchangeState(),
+            RoundPhase.Playing => new PlayingState(),
             RoundPhase.Scoring => new ScoringState(),
             RoundPhase.Finished => new FinishedState(),
             _ => throw new ArgumentException()
