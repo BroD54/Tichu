@@ -37,7 +37,7 @@ namespace Core.Game
                 return true;
             }
 
-            if (!move.Combination.Beats(move.Combination)) return false;
+            if (!move.Combination.Beats(CurrentCombination)) return false;
             
             CurrentCombination = move.Combination;
             CurrentWinner = move.Player;
