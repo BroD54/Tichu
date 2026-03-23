@@ -8,18 +8,21 @@ namespace Core.Round
     using Player;
     using Combination;
     using Game;
+    using Events;
     
     public class Round
     {
         public List<Player> Players { get; }
         public List<Team>  Teams { get; }
         public Deck Deck { get; }
-        public int CurrentPlayerIndex { get; private set; }
-        [CanBeNull] public Trick CurrentTrick { get; private set; }
+        public int CurrentPlayerIndex { get; internal set; }
+        [CanBeNull] public Trick CurrentTrick { get; internal set; }
         public List<Player> FinishOrder { get; }
         public Dictionary<Player, TichuCall> TichuCalls { get; }
         
         private IRoundState _currentState;
+        
+        public event Action<GrandTichuDecisionNeededEvent> OnGrandTichuDecisionNeeded;
 
         public Round(List<Player> players, List<Team> teams, Deck deck)
         {
@@ -52,28 +55,23 @@ namespace Core.Round
         {
             return _currentState as T;
         }
-        
-        public bool ApplyMove(Move move)
+
+        private bool IsValidIndex(int index)
         {
-            if (move.Player != Players[CurrentPlayerIndex]) return false;
-        
-            var isLegalMove = CurrentTrick!.TryAddMove(move);
-            if  (!isLegalMove) return false;
-        
-            AdvanceTurn();
-            
-            return true;
+            return index >= 0 && index < Players.Count;
         }
-        
-        private void AdvanceTurn()
+
+        public bool SubmitGrandTichuDecision(int playerIndex, bool calledGrandTichu)
         {
-            CurrentPlayerIndex = (CurrentPlayerIndex + 1) % Players.Count;
+            if (!IsValidIndex(playerIndex)) return false;
+
+            return GetState<GrandTichuCallsState>()?.SubmitDecision(this, Players[playerIndex], calledGrandTichu) ??
+                   false;
         }
-        
-        private void StartNewTrick(Player leader)
+
+        internal void FireGrandTichuDecisionNeeded(Player player)
         {
-            CurrentTrick = new Trick(leader, new List<Move>());
-            CurrentPlayerIndex = Players.IndexOf(leader);
+            OnGrandTichuDecisionNeeded?.Invoke(new GrandTichuDecisionNeededEvent(player.Name, Players.IndexOf(player)));
         }
 
     }
