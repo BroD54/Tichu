@@ -8,7 +8,7 @@ namespace Core.Game
     {
         public Player Player { get; }
         [CanBeNull] public Combination Combination { get; }
-        public bool IsPass =>  Combination != null;
+        public bool IsPass =>  Combination == null;
         
         public  Move(Player player, Combination combination)
         {

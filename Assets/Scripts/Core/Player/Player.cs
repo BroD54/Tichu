@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Core.Player
 {
     using Card;
     using Game;
+    using Round;
     
     public abstract class Player
     {
@@ -12,6 +14,8 @@ namespace Core.Player
         public List<List<Card>> TricksWon { get; private set; }
         public bool DeclaredTichu { get; private set; }
         public bool DeclaredGrandTichu { get; private set; }
+        
+        public bool HasMahjong => Hand.Any(card =>  card.IsMahjong);
 
         protected Player(string name)
         {
@@ -37,7 +41,17 @@ namespace Core.Player
                 Hand.Remove(card);
             }
         }
-        
-        public abstract Move MakeMove(GameState state);
+
+        public void DeclareGrandTichu()
+        {
+            DeclaredGrandTichu = true;
+        }
+
+        public void DeclareTichu()
+        {
+            DeclaredTichu = true;
+        }
+
+        public abstract Move MakeMove(Round currentRound);
     }
 }

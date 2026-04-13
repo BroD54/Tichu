@@ -1,6 +1,7 @@
 ﻿namespace Core.Player
 {
     using Game;
+    using Round;
     
     public class HumanPlayer : Player
     {
@@ -16,7 +17,7 @@
             _pendingMove = move;
         }
 
-        public override Move MakeMove(GameState state)
+        public override Move MakeMove(Round currentRound)
         {
             return _pendingMove;
         }
