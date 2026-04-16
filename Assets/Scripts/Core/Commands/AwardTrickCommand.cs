@@ -6,13 +6,7 @@ namespace Core.Commands
     using Card;
     using Game;
     using Round;
-
-    /// <summary>
-    /// Gives the completed trick's cards to the recipient and clears CurrentTrick.
-    /// For normal tricks, recipient == CurrentWinner.
-    /// For Dragon tricks, recipient is the opponent chosen by the winning player.
-    /// Requires Trick.Moves to be exposed: public IReadOnlyList<Move> Moves => _moves.AsReadOnly();
-    /// </summary>
+    
     public class AwardTrickCommand : Command
     {
         private readonly Round _round;

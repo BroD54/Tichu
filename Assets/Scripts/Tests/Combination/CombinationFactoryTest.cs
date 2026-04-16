@@ -9,12 +9,19 @@ namespace Tests.Combination
 
     public class CombinationFactoryTest
     {
+        private CombinationFactory _combinationFactory;
+
+        [SetUp]
+        public void Setup()
+        {
+            _combinationFactory = new CombinationFactory();
+        }
         [Test]
         public void TestCreateNoCards()
         {
             List<Card> cards = new List<Card>();
             
-            Combination combination = CombinationFactory.Create(cards);
+            Combination combination = _combinationFactory.Create(cards);
 
             Assert.AreEqual(combination, null);
         }
@@ -27,7 +34,7 @@ namespace Tests.Combination
                 new (Rank.Ace, Suit.Jade, CardType.Standard),
             };
             
-            Combination combination = CombinationFactory.Create(cards);
+            Combination combination = _combinationFactory.Create(cards);
             
             Assert.AreEqual(combination.Type, CombinationType.Single);
             Assert.AreEqual(combination.Strength, 14);
@@ -41,7 +48,7 @@ namespace Tests.Combination
                 new (Suit.None, CardType.Dog),
             };
             
-            Combination combination = CombinationFactory.Create(cards);
+            Combination combination = _combinationFactory.Create(cards);
             
             Assert.AreEqual(combination.Type, CombinationType.Single);
             Assert.AreEqual(combination.Strength, 0);
@@ -56,7 +63,7 @@ namespace Tests.Combination
                 new (Rank.Ace, Suit.Pagoda, CardType.Standard),
             };
             
-            Combination combination = CombinationFactory.Create(cards);
+            Combination combination = _combinationFactory.Create(cards);
             
             Assert.AreEqual(combination.Type, CombinationType.Pair);
             Assert.AreEqual(combination.Strength, 14);
@@ -71,7 +78,7 @@ namespace Tests.Combination
                 new (Suit.None,  CardType.Phoenix),
             };
             
-            Combination combination = CombinationFactory.Create(cards);
+            Combination combination = _combinationFactory.Create(cards);
             
             Assert.AreEqual(combination.Type, CombinationType.Pair);
             Assert.AreEqual(combination.Strength, 13);
@@ -87,7 +94,7 @@ namespace Tests.Combination
                 new (Rank.Eight, Suit.Star, CardType.Standard),
             };
             
-            Combination combination = CombinationFactory.Create(cards);
+            Combination combination = _combinationFactory.Create(cards);
             
             Assert.AreEqual(combination.Type, CombinationType.Triple);
             Assert.AreEqual(combination.Strength, 8);
@@ -103,7 +110,7 @@ namespace Tests.Combination
                 new (Suit.None,  CardType.Phoenix),
             };
             
-            Combination combination = CombinationFactory.Create(cards);
+            Combination combination = _combinationFactory.Create(cards);
             
             Assert.AreEqual(combination.Type, CombinationType.Triple);
             Assert.AreEqual(combination.Strength, 2);
@@ -121,7 +128,7 @@ namespace Tests.Combination
                 new (Rank.King, Suit.Sword, CardType.Standard),
             };
             
-            Combination combination = CombinationFactory.Create(cards);
+            Combination combination = _combinationFactory.Create(cards);
             
             Assert.AreEqual(combination.Type, CombinationType.FullHouse);
             Assert.AreEqual(combination.Strength, 2);
@@ -139,7 +146,7 @@ namespace Tests.Combination
                 new (Rank.King, Suit.Pagoda, CardType.Standard),
             };
             
-            Combination combination = CombinationFactory.Create(cards);
+            Combination combination = _combinationFactory.Create(cards);
             
             Assert.AreEqual(combination.Type, CombinationType.FullHouse);
             Assert.AreEqual(combination.Strength, 13);
@@ -157,7 +164,7 @@ namespace Tests.Combination
                 new (Rank.Five, Suit.Pagoda, CardType.Standard),
             };
             
-            Combination combination = CombinationFactory.Create(cards);
+            Combination combination = _combinationFactory.Create(cards);
             
             Assert.AreEqual(combination.Type, CombinationType.Straight);
             Assert.AreEqual(combination.Strength, 5);
@@ -178,7 +185,7 @@ namespace Tests.Combination
                 new (Rank.Nine, Suit.Pagoda, CardType.Standard),
             };
             
-            Combination combination = CombinationFactory.Create(cards);
+            Combination combination = _combinationFactory.Create(cards);
             
             Assert.AreEqual(combination.Type, CombinationType.Straight);
             Assert.AreEqual(combination.Strength, 9);
@@ -199,7 +206,7 @@ namespace Tests.Combination
                 new (Suit.None, CardType.Phoenix),
             };
             
-            Combination combination = CombinationFactory.Create(cards);
+            Combination combination = _combinationFactory.Create(cards);
             
             Assert.AreEqual(combination.Type, CombinationType.Straight);
             Assert.AreEqual(combination.Strength, 9);
@@ -216,7 +223,7 @@ namespace Tests.Combination
                 new (Rank.Three, Suit.Sword, CardType.Standard),
             };
             
-            Combination combination = CombinationFactory.Create(cards);
+            Combination combination = _combinationFactory.Create(cards);
             
             Assert.AreEqual(combination.Type, CombinationType.StraightPairs);
             Assert.AreEqual(combination.Strength, 3);
@@ -233,7 +240,7 @@ namespace Tests.Combination
                 new (Suit.None, CardType.Phoenix),
             };
             
-            Combination combination = CombinationFactory.Create(cards);
+            Combination combination = _combinationFactory.Create(cards);
             
             Assert.AreEqual(combination.Type, CombinationType.StraightPairs);
             Assert.AreEqual(combination.Strength, (int)Rank.Three);
@@ -250,7 +257,7 @@ namespace Tests.Combination
                 new (Rank.King, Suit.Pagoda, CardType.Standard),
             };
             
-            Combination combination = CombinationFactory.Create(cards);
+            Combination combination = _combinationFactory.Create(cards);
             
             Assert.AreEqual(combination.Type, CombinationType.FourKind);
             Assert.AreEqual(combination.Strength, (int)Rank.King);
@@ -269,7 +276,7 @@ namespace Tests.Combination
                 new (Rank.Six, Suit.Star, CardType.Standard),
             };
             
-            Combination combination = CombinationFactory.Create(cards);
+            Combination combination = _combinationFactory.Create(cards);
             
             Assert.AreEqual(combination.Type, CombinationType.StraightFlush);
             Assert.AreEqual(combination.Strength, (int)Rank.Six);

@@ -5,10 +5,10 @@ namespace Core.Combination
 {
     using Card;
     
-    public static class CombinationFactory
+    public class CombinationFactory
     {
         [CanBeNull]
-        public static Combination Create(List<Card> cards)
+        public Combination Create(List<Card> cards)
         {
             if (cards == null || cards.Count == 0) return null;
             

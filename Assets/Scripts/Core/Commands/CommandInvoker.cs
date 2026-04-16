@@ -2,7 +2,7 @@
 {
     public class CommandInvoker
     {
-        public void ExecuteCommand(Command command)
+        public void ExecuteCommand(ICommand command)
         {
             command.Execute();
         }

@@ -12,6 +12,7 @@
 
         public DeclareTichuCommand(Round round, Player player, TichuCall call)
         {
+            
             _round = round;
             _player = player;
             _call = call;
