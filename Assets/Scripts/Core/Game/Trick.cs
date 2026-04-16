@@ -8,32 +8,32 @@ namespace Core.Game
     
     public class Trick
     {
-        private List<Move> _moves;
+        public List<Move> Moves { get; }
         public Player Leader { get; }
         [CanBeNull] public Combination  CurrentCombination { get; private set; }
         [CanBeNull] public Player CurrentWinner { get; private set; }
 
         public Trick(Player player, List<Move> moves)
         {
-            _moves = moves;
+            Moves = moves;
             Leader = player;
         }
 
         public bool TryAddMove(Move move)
         {
-            if (_moves.Count == 0)
+            if (Moves.Count == 0)
             {
                 if (move.Combination == null) return false;
                 
                 CurrentCombination = move.Combination;
                 CurrentWinner = move.Player;
-                _moves.Add(move);
+                Moves.Add(move);
                 return true;
             }
 
             if (move.Combination == null)
             {
-                _moves.Add(move);
+                Moves.Add(move);
                 return true;
             }
 
@@ -41,20 +41,20 @@ namespace Core.Game
             
             CurrentCombination = move.Combination;
             CurrentWinner = move.Player;
-            _moves.Add(move);
+            Moves.Add(move);
             
             return true;
         }
 
         private bool IsFinished()
         {
-            if (_moves.Count == 0) return false;
+            if (Moves.Count == 0) return false;
 
             var consecutivePasses = 0;
 
-            for (var i = _moves.Count - 1; i >= 0; i--)
+            for (var i = Moves.Count - 1; i >= 0; i--)
             {
-                if (_moves[i].IsPass) consecutivePasses++;
+                if (Moves[i].IsPass) consecutivePasses++;
                 else break;
             }
 
