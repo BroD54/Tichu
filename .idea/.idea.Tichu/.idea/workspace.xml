@@ -2,16 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6a6f3710-e27c-476f-a957-76970ce2a1ee" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Events/TichuEventBus.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Events/TichuEventBus.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Unity/HandUIController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Unity/HandUIController.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Tests/Observer.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Tests/Observer/ObserverTest.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Tests/Observer/ObserverTest.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Tichu/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Tichu/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/PlayCardsCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/PlayCardsCommand.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Round/DealingFirstCardsState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Round/DealingFirstCardsState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Round/GrandTichuCallsState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Round/GrandTichuCallsState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Round/PlayingState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Round/PlayingState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Round/Round.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Round/Round.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,12 +31,12 @@
     &quot;assignee&quot;: &quot;BroD54&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/BroD54/Tichu.git",
-    "accountId": "5cb5e4cf-8304-4c35-b034-a4707b1606cb"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/BroD54/Tichu.git&quot;,
+    &quot;accountId&quot;: &quot;5cb5e4cf-8304-4c35-b034-a4707b1606cb&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/.vscode/extensions.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/.vscode/launch.json" root0="FORCE_HIGHLIGHTING" />
@@ -68,6 +63,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/Player/HumanPlayer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Tests/Combination/CombinationFactoryTest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Tests/Combination/CombinationTests.asmdef" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Tests/Observer/ObserverTest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Unity/HandUIController.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="McpProjectServerCommands">
@@ -86,27 +82,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Device#class com.jetbrains.rider.plugins.unity.run.devices.UnityEditorDeviceKind#com.jetbrains.rider.plugins.unity.run.devices.UnityDevicesProvider#Unity Attach To: Attach to": "Unity Editor",
-    "DeviceKind#com.jetbrains.rider.plugins.unity.run.devices.UnityDevicesProvider": "Unity Editor",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "Unity Attach To.Attach to.executor": "Debug",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "observer",
-    "ignore.virus.scanning.warn.message": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Device#class com.jetbrains.rider.plugins.unity.run.devices.UnityEditorDeviceKind#com.jetbrains.rider.plugins.unity.run.devices.UnityDevicesProvider#Unity Attach To: Attach to&quot;: &quot;Unity Editor&quot;,
+    &quot;DeviceKind#com.jetbrains.rider.plugins.unity.run.devices.UnityDevicesProvider&quot;: &quot;Unity Editor&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Unity Attach To.Attach to.executor&quot;: &quot;Debug&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Unity Attach To.Attach to">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.3.8f1\Editor\Unity.exe" />
@@ -158,6 +154,7 @@
       <workItem from="1774062341862" duration="238000" />
       <workItem from="1776269908409" duration="8007000" />
       <workItem from="1776442824886" duration="5290000" />
+      <workItem from="1776642310683" duration="803000" />
     </task>
     <task id="LOCAL-00001" summary="Added Command Intefaces and Concrete commands for gameplay">
       <option name="closed" value="true" />
@@ -195,7 +192,8 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Added Command Intefaces and Concrete commands for gameplay" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Command Intefaces and Concrete commands for gameplay" />
+    <MESSAGE value="added eventbus and changed state classes to notify observer at state changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="added eventbus and changed state classes to notify observer at state changes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
