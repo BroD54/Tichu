@@ -71,7 +71,7 @@ namespace Core.Round
 
         internal void FireGrandTichuDecisionNeeded(Player player)
         {
-            OnGrandTichuDecisionNeeded?.Invoke(new GrandTichuDecisionNeededEvent(player.Name, Players.IndexOf(player)));
+            TichuEventBus.RaiseGrandTichuDecisionNeeded(new GrandTichuDecisionNeededEvent(player.Name, Players.IndexOf(player)));
         }
 
     }

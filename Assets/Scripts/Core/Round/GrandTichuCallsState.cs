@@ -1,3 +1,5 @@
+using Core.Events;
+
 namespace Core.Round
 {
     using Player;
@@ -27,7 +29,12 @@ namespace Core.Round
             if (round.TichuCalls.ContainsKey(player)) return false;
 
             round.TichuCalls[player] = calledGrandTichu ? TichuCall.GrandTichu : TichuCall.None;
-            if (calledGrandTichu) player.DeclareGrandTichu();
+            if (calledGrandTichu)
+            {
+                player.DeclareGrandTichu();
+                TichuEventBus.RaiseGrandTichuDeclared(round.Players.IndexOf(player));  // ← add
+
+            }
 
             _pendingResponses--;
             if (_pendingResponses == 0)
