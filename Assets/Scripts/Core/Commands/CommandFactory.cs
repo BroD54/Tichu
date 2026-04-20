@@ -1,4 +1,6 @@
-﻿namespace Core.Commands
+﻿using Core.Scoring;
+
+namespace Core.Commands
 {
     using Player;
     using Card;
@@ -21,6 +23,9 @@
         
         public ICommand CreatePlayCardsCommand(Round round, Move move) 
             => new PlayCardsCommand(round, move);
+        
+        public ICommand CreateScoreRoundCommand(Round round, ScoringService scoringService) 
+            => new ScoreRoundCommand(round, scoringService);
     
     }
 }
