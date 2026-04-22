@@ -25,7 +25,7 @@ namespace Core.Round
         
         private IRoundState _currentState;
         
-        public Round(List<Player> players, List<Team> teams, Deck deck)
+        public Round(List<Player> players, List<Team> teams, Deck deck, TichuEventBus events)
         {
             Players = players;
             Teams = teams;
@@ -34,7 +34,7 @@ namespace Core.Round
             FinishOrder = new List<Player>();
             TichuCalls = new Dictionary<Player, TichuCall>();
             CurrentTrick = null;
-            Events = new TichuEventBus();
+            Events = events;
             
             _currentState = RoundStateFactory.Create(RoundPhase.DealingFirstCards);
             _currentState.OnEnter(this);

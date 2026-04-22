@@ -1,4 +1,5 @@
 using Core.Events;
+using UnityEngine;
 
 namespace Core.Round
 {
@@ -7,15 +8,12 @@ namespace Core.Round
     
     public class GrandTichuCallsState : IRoundState
     {
-        private int _pendingResponses;
+        private int _currentIndex = 0;
+
         public void OnEnter(Round round)
         {
-            _pendingResponses = round.Players.Count;
-            foreach (var player in round.Players)
-                round.Events.RaiseGrandTichuDecisionNeeded(
-                    player.Name, 
-                    round.Players.IndexOf(player)
-                );
+            _currentIndex = 0;
+            AskNext(round);
         }
 
         public void OnExit(Round round)
@@ -38,12 +36,32 @@ namespace Core.Round
                 round.Events.RaiseGrandTichuDeclared(round.Players.IndexOf(player));
 
             }
-
-            _pendingResponses--;
-            if (_pendingResponses == 0)
+            
+            _currentIndex++;
+            
+            if (_currentIndex >= round.Players.Count)
                 round.TransitionToNext();
+            else
+                AskNext(round);
 
             return true;
+
+        }
+        
+        private void AskNext(Round round)
+        {
+            if (_currentIndex >= round.Players.Count)
+            {
+                round.TransitionToNext();
+                return;
+            }
+
+            var player = round.Players[_currentIndex];
+
+            round.Events.RaiseGrandTichuDecisionNeeded(
+                player.Name,
+                _currentIndex
+            );
         }
     }
 }

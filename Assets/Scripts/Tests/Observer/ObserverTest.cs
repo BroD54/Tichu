@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Core.Events;
 using NUnit.Framework;
 
 namespace Tests.Observer
@@ -31,7 +32,7 @@ namespace Tests.Observer
                 new Team(1, _players[1], _players[3])
             };
 
-            _round = new Round(_players, teams, new Deck());
+            _round = new Round(_players, teams, new Deck(), new TichuEventBus());
         }
         
         [Test]
@@ -51,7 +52,7 @@ namespace Tests.Observer
                 new Team(1, _players[1], _players[3])
             };
             
-            var round = new Round(players, teams, new Deck());
+            var round = new Round(players, teams, new Deck(), new TichuEventBus());
             Assert.That(round.IsInState<GrandTichuCallsState>(), Is.True);
             Assert.That(round.TichuCalls.Count, Is.EqualTo(0));
         }
@@ -268,7 +269,7 @@ namespace Tests.Observer
         private Round BuildRoundInExchangeState()
         {
             var players = BuildFourPlayers();
-            var round = new Round(players.players, players.teams, new Deck());
+            var round = new Round(players.players, players.teams, new Deck(), new TichuEventBus());
 
             for (int i = 0; i < 4; i++)
                 round.SubmitGrandTichuDecision(i, false);

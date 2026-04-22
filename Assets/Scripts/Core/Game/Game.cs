@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Core.Game
 {
@@ -11,34 +12,27 @@ namespace Core.Game
         public List<Player> Players { get; }
         public List<Team> Teams { get; }
         public Round CurrentRound { get; private set; }
-        public TichuEventBus Events { get; }
+        
+        private readonly TichuEventBus _events = new TichuEventBus();
+        public TichuEventBus Events => _events;        
         public bool IsOver { get; private set; }
 
         public Game(List<Player> players, List<Team> teams)
         {
             Players = players;
             Teams = teams;
-            Events = new TichuEventBus();
             IsOver = false;
+            
+            Debug.Log($"Game Events instance: {Events.GetHashCode()}");
 
-            StartNewRound();
         }
 
         private void StartNewRound()
         {
-            CurrentRound = new Round(Players, Teams, new Deck());
+            CurrentRound = new Round(Players, Teams, new Deck(), Events);
             CurrentRound.OnRoundComplete = OnRoundFinished;
             
-            CurrentRound.Events.OnCardsPlayed      += (i, c)    => Events.RaiseCardsPlayed(i, c);
-            CurrentRound.Events.OnTurnChanged      += i         => Events.RaiseTurnChanged(i);
-            CurrentRound.Events.OnTrickWon         += (i, c)    => Events.RaiseTrickWon(i, c);
-            CurrentRound.Events.OnPlayerFinished   += i         => Events.RaisePlayerFinished(i);
-            CurrentRound.Events.OnTichuDeclared    += i         => Events.RaiseTichuDeclared(i);
-            CurrentRound.Events.OnGrandTichuDeclared += i       => Events.RaiseGrandTichuDeclared(i);
-            CurrentRound.Events.OnGrandTichuDecisionNeeded += (n, i) => Events.RaiseGrandTichuDecisionNeeded(n, i);
-            CurrentRound.Events.OnExchangePhaseStarted     += () => Events.RaiseExchangePhaseStarted();
-            CurrentRound.Events.OnCardsExchanged   += (i, c)    => Events.RaiseCardsExchanged(i, c);
-            CurrentRound.Events.OnGameWon          += i         => HandleGameWon(i);
+            CurrentRound.Events.OnGameWon += i => HandleGameWon(i);
         }
 
         private void HandleGameWon(int teamIndex)
@@ -62,6 +56,12 @@ namespace Core.Game
         public void OnRoundFinished()
         {
             if (IsOver) return;
+            StartNewRound();
+        }
+
+        public void Start()
+        {
+            Debug.Log("Game constructor - starting round");
             StartNewRound();
         }
     }

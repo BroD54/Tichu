@@ -1,28 +1,129 @@
-
-
 using System.Collections.Generic;
+using System.Linq;
+using System.Collections;
 using Core.Game;
+using Core.Player;
 using UnityEngine;
 
 public class UnityBridge : MonoBehaviour
 {
-    // private Game _game;
-    //
-    // void Start()
-    // {
-    //     var players = BuildPlayers();
-    //     var teams   = BuildTeams(players);
-    //     _game = new Game(players, teams);
-    //
-    //     _game.Events.OnGrandTichuDecisionNeeded += HandleGrandTichuDecisionNeeded;
-    //     _game.Events.OnTurnChanged              += HandleTurnChanged;
-    //     _game.Events.OnTrickWon                 += HandleTrickWon;
-    //     _game.Events.OnGameWon                  += HandleGameWon;
-    // }
-    //
-    // public void OnPlayCardsClicked(int playerIndex, List<string> cardIds)
-    //     => _game.SubmitMove(playerIndex, cardIds);
-    //
-    // public void OnGrandTichuClicked(int playerIndex, bool called)
-    //     => _game.SubmitGrandTichuDecision(playerIndex, called);
+    [SerializeField] private GrandTichuPanel grandTichuPanel;
+    [SerializeField] private ExchangePanel   exchangePanel;
+    [SerializeField] private PlayPanel       playPanel;
+    [SerializeField] private ScorePanel      scorePanel;
+
+    private Game _game;
+    private Queue<int> _exchangeQueue;
+
+    void Start()
+    {
+        var players = new List<Player>
+        {
+            new HumanPlayer("Player 1"),
+            new HumanPlayer("Player 2"),
+            new HumanPlayer("Player 3"),
+            new HumanPlayer("Player 4")
+        };
+        var teams = new List<Team>
+        {
+            new Team(0,  players[0], players[2]),
+            new Team(1, players[1], players[3])
+        };
+
+        _game = new Game(players, teams);
+
+        _game.Events.OnGrandTichuDecisionNeeded += HandleGrandTichuDecisionNeeded;
+        _game.Events.OnExchangePhaseStarted     += HandleExchangePhaseStarted;
+        _game.Events.OnCardsExchanged           += HandleCardsExchanged;
+        _game.Events.OnTurnChanged              += HandleTurnChanged;
+        _game.Events.OnCardsPlayed              += HandleCardsPlayed;
+        _game.Events.OnPlayerPassed             += HandlePlayerPassed;
+        _game.Events.OnTrickWon                 += HandleTrickWon;
+        _game.Events.OnPlayerFinished           += HandlePlayerFinished;
+        _game.Events.OnGameWon                  += HandleGameWon;
+
+        Debug.Log($"UnityBridge EventBus instance: {_game.Events.GetHashCode()}");        
+        _game.Start();
+    }
+
+    void OnDestroy()
+    {
+        if (_game == null || _game.Events == null)
+            return;
+
+        _game.Events.OnGrandTichuDecisionNeeded -= HandleGrandTichuDecisionNeeded;
+        _game.Events.OnExchangePhaseStarted     -= HandleExchangePhaseStarted;
+        _game.Events.OnCardsExchanged           -= HandleCardsExchanged;
+        _game.Events.OnTurnChanged              -= HandleTurnChanged;
+        _game.Events.OnCardsPlayed              -= HandleCardsPlayed;
+        _game.Events.OnPlayerPassed             -= HandlePlayerPassed;
+        _game.Events.OnTrickWon                 -= HandleTrickWon;
+        _game.Events.OnPlayerFinished           -= HandlePlayerFinished;
+        _game.Events.OnGameWon                  -= HandleGameWon;
+    }
+    
+    public void OnGrandTichuClicked(int playerIndex, bool called)
+        => _game.SubmitGrandTichuDecision(playerIndex, called);
+
+    public void OnCardExchangeSubmitted(int playerIndex, List<string> cardIds)
+        => _game.SubmitCardExchange(playerIndex, cardIds);
+
+    public void OnCardsPlayed(int playerIndex, List<string> cardIds)
+        => _game.SubmitMove(playerIndex, cardIds);
+
+    public void OnPassClicked(int playerIndex)
+        => _game.SubmitMove(playerIndex, new List<string>());
+
+    public void OnTichuClicked(int playerIndex)
+        => _game.SubmitTichuDeclaration(playerIndex);
+
+    private void HandleGrandTichuDecisionNeeded(string playerName, int playerIndex)
+    {
+        Debug.Log("Showing grand tichu panel");
+        grandTichuPanel.ShowForPlayer(playerName, playerIndex);
+    }
+
+    private void HandleExchangePhaseStarted()
+    {
+        _exchangeQueue = new Queue<int>(new[] { 0, 1, 2, 3 });
+        ShowNextExchange();
+    }
+
+    private void HandleCardsExchanged(int playerIndex, List<string> cardIds)
+        => ShowNextExchange();
+
+    private void HandleTurnChanged(int playerIndex)
+    {
+        var cardIds = _game.CurrentRound.Players[playerIndex].Hand
+            .Select(c => c.ToString()).ToList();
+        playPanel.ShowTurn(playerIndex, cardIds);
+    }
+
+    private void HandleCardsPlayed(int playerIndex, List<string> cardIds)
+        => playPanel.UpdateTrickLabel(
+            $"Player {playerIndex + 1} played: {string.Join(", ", cardIds)}");
+
+    private void HandlePlayerPassed(int playerIndex)
+        => playPanel.UpdateTrickLabel($"Player {playerIndex + 1} passed");
+
+    private void HandleTrickWon(int playerIndex, List<string> cardIds)
+        => playPanel.UpdateTrickLabel($"Player {playerIndex + 1} won the trick");
+
+    private void HandlePlayerFinished(int playerIndex)
+        => playPanel.UpdateTrickLabel($"Player {playerIndex + 1} finished!");
+
+    private void HandleGameWon(int teamIndex)
+    {
+        playPanel.gameObject.SetActive(false);
+        scorePanel.Show($"Team {teamIndex + 1} wins!");
+    }
+
+    private void ShowNextExchange()
+    {
+        if (_exchangeQueue == null || _exchangeQueue.Count == 0) return;
+        int playerIndex = _exchangeQueue.Dequeue();
+        var cardIds = _game.CurrentRound.Players[playerIndex].Hand
+            .Select(c => c.ToString()).ToList();
+        exchangePanel.ShowForPlayer(playerIndex, cardIds);
+    }
 }

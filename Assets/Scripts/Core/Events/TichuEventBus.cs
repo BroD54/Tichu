@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Core.Events
 {
@@ -36,7 +37,11 @@ namespace Core.Events
             => OnAllCardsDealt?.Invoke(playerNames);
 
         public void RaiseGrandTichuDecisionNeeded(string playerName, int playerIndex)
-            => OnGrandTichuDecisionNeeded?.Invoke(playerName, playerIndex);
+        {
+            Debug.Log($"Raise EventBus instance: {this.GetHashCode()}");
+            Debug.Log("Need decision from" +  playerName);
+            OnGrandTichuDecisionNeeded?.Invoke(playerName, playerIndex);
+        }
 
         public void RaiseGrandTichuDeclared(int playerIndex)
             => OnGrandTichuDeclared?.Invoke(playerIndex);

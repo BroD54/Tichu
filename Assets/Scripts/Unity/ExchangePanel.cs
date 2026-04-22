@@ -1,0 +1,41 @@
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ExchangePanel : MonoBehaviour
+{
+    [SerializeField] private TextMeshProUGUI instructionLabel;
+    [SerializeField] private HandUI handUI;
+    [SerializeField] private Button confirmButton;
+    [SerializeField] private UnityBridge bridge;
+
+    private int _currentPlayerIndex;
+
+    void Start()
+    {
+        confirmButton.onClick.AddListener(OnConfirmClicked);
+    }
+
+    public void ShowForPlayer(int playerIndex, List<string> cardIds)
+    {
+        gameObject.SetActive(true);
+        _currentPlayerIndex  = playerIndex;
+        instructionLabel.text = $"Player {playerIndex + 1}: Select 3 cards to exchange";
+        handUI.ShowHand(cardIds);
+        handUI.SetInteractable(true);
+    }
+
+    private void OnConfirmClicked()
+    {
+        var selected = handUI.GetSelectedCardIds();
+        if (selected.Count != 3)
+        {
+            instructionLabel.text = "Select exactly 3 cards";
+            return;
+        }
+
+        gameObject.SetActive(false);
+        bridge.OnCardExchangeSubmitted(_currentPlayerIndex, selected);
+    }
+}
