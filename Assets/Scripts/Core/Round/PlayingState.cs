@@ -83,7 +83,7 @@ namespace Core.Round
             do
             {
                 next = (next + 1) % round.Players.Count;
-                if (next == startIndex) break; // full loop, no active players
+                if (next == startIndex) break;
             } while (round.Players[next].Hand.Count == 0);
 
             round.CurrentPlayerIndex = next;
@@ -141,10 +141,8 @@ namespace Core.Round
 
         private Player FindNextActivePlayer(Round round, Player startingFrom)
         {
-            // If winner still has cards they lead
             if (startingFrom.Hand.Count > 0) return startingFrom;
 
-            // Otherwise find next player with cards
             int startIndex = round.Players.IndexOf(startingFrom);
             for (int i = 1; i < round.Players.Count; i++)
             {
@@ -160,16 +158,37 @@ namespace Core.Round
         private void CheckRoundOver(Round round)
         {
             var activePlayers = round.Players.Count(p => p.Hand.Count > 0);
-    
+
             if (activePlayers <= 1)
             {
                 var lastPlayer = round.Players.FirstOrDefault(p => p.Hand.Count > 0);
-                if (lastPlayer != null)
+                if (lastPlayer != null && !round.FinishOrder.Contains(lastPlayer))
                 {
                     round.FinishOrder.Add(lastPlayer);
                     round.Events.RaisePlayerFinished(round.Players.IndexOf(lastPlayer));
                 }
                 round.TransitionToNext();
+                return;
+            }
+
+            if (round.FinishOrder.Count >= 2)
+            {
+                var first  = round.FinishOrder[0];
+                var second = round.FinishOrder[1];
+
+                bool sameTeam = round.Teams.Any(team =>
+                    team.Contains(first) && team.Contains(second));
+
+                if (sameTeam)
+                {
+                    foreach (var player in round.Players)
+                    {
+                        if (round.FinishOrder.Contains(player)) continue;
+                        round.FinishOrder.Add(player);
+                        round.Events.RaisePlayerFinished(round.Players.IndexOf(player));
+                    }
+                    round.TransitionToNext();
+                }
             }
         }
     }

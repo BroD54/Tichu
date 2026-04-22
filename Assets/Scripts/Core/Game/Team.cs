@@ -21,5 +21,11 @@
         {
             Score += change;
         }
+
+        public bool Contains(Player player)
+        {
+            if (player == Player1 || player == Player2) return true;
+            return false;
+        }
     }
 }

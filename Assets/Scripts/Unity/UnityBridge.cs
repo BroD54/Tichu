@@ -7,10 +7,11 @@ using UnityEngine;
 
 public class UnityBridge : MonoBehaviour
 {
-    [SerializeField] private GrandTichuPanel grandTichuPanel;
-    [SerializeField] private ExchangePanel   exchangePanel;
-    [SerializeField] private PlayPanel       playPanel;
-    [SerializeField] private ScorePanel      scorePanel;
+    [SerializeField] private GrandTichuPanel    grandTichuPanel;
+    [SerializeField] private ExchangePanel      exchangePanel;
+    [SerializeField] private PlayPanel          playPanel;
+    [SerializeField] private ScorePanel         scorePanel;
+    [SerializeField] private RoundSummaryPanel  roundSummaryPanel;
 
     private Game _game;
     private Queue<int> _exchangeQueue;
@@ -26,7 +27,7 @@ public class UnityBridge : MonoBehaviour
         };
         var teams = new List<Team>
         {
-            new Team(0,  players[0], players[2]),
+            new Team(0, players[0], players[2]),
             new Team(1, players[1], players[3])
         };
 
@@ -40,16 +41,15 @@ public class UnityBridge : MonoBehaviour
         _game.Events.OnPlayerPassed             += HandlePlayerPassed;
         _game.Events.OnTrickWon                 += HandleTrickWon;
         _game.Events.OnPlayerFinished           += HandlePlayerFinished;
+        _game.Events.OnRoundScored              += HandleRoundScored;
         _game.Events.OnGameWon                  += HandleGameWon;
 
-        Debug.Log($"UnityBridge EventBus instance: {_game.Events.GetHashCode()}");        
-        _game.Start();
+        _game.StartNextRound();
     }
 
     void OnDestroy()
     {
-        if (_game == null || _game.Events == null)
-            return;
+        if (_game == null || _game.Events == null) return;
 
         _game.Events.OnGrandTichuDecisionNeeded -= HandleGrandTichuDecisionNeeded;
         _game.Events.OnExchangePhaseStarted     -= HandleExchangePhaseStarted;
@@ -59,6 +59,7 @@ public class UnityBridge : MonoBehaviour
         _game.Events.OnPlayerPassed             -= HandlePlayerPassed;
         _game.Events.OnTrickWon                 -= HandleTrickWon;
         _game.Events.OnPlayerFinished           -= HandlePlayerFinished;
+        _game.Events.OnRoundScored              -= HandleRoundScored;
         _game.Events.OnGameWon                  -= HandleGameWon;
     }
     
@@ -77,22 +78,30 @@ public class UnityBridge : MonoBehaviour
     public void OnTichuClicked(int playerIndex)
         => _game.SubmitTichuDeclaration(playerIndex);
 
-    private void HandleGrandTichuDecisionNeeded(string playerName, int playerIndex)
+    public void OnNextRoundClicked()
     {
-        Debug.Log("Showing grand tichu panel");
-        grandTichuPanel.ShowForPlayer(playerName, playerIndex);
+        roundSummaryPanel.gameObject.SetActive(false);
+        StartCoroutine(StartNextRoundNextFrame());
     }
+
+    private IEnumerator StartNextRoundNextFrame()
+    {
+        yield return null;
+        _game.StartNextRound();
+    }
+    
+    private void HandleGrandTichuDecisionNeeded(string playerName, int playerIndex)
+        => grandTichuPanel.ShowForPlayer(playerName, playerIndex);
 
     private void HandleExchangePhaseStarted()
     {
+        playPanel.gameObject.SetActive(false);
         _exchangeQueue = new Queue<int>(new[] { 0, 1, 2, 3 });
         ShowNextExchange();
     }
 
     private void HandleCardsExchanged(int playerIndex, List<string> cardIds)
-    {
-        StartCoroutine(ShowNextExchangeNextFrame());
-    }
+        => StartCoroutine(ShowNextExchangeNextFrame());
 
     private IEnumerator ShowNextExchangeNextFrame()
     {
@@ -103,55 +112,56 @@ public class UnityBridge : MonoBehaviour
     private void HandleTurnChanged(int playerIndex)
     {
         var player = _game.CurrentRound.Players[playerIndex];
-    
-        if (player.Hand.Count == 0)
-        {
-            return;
-        }
+        if (player.Hand.Count == 0) return;
 
         var cardIds = player.Hand
             .Select(c => c.ToString())
             .ToList();
+
         playPanel.ShowTurn(playerIndex, cardIds);
     }
+
     private void HandleCardsPlayed(int playerIndex, List<string> cardIds)
         => playPanel.UpdateTrickLabel(
             $"Player {playerIndex + 1} played: {FormatCardList(cardIds)}");
+
+    private void HandlePlayerPassed(int playerIndex)
+        => playPanel.UpdateTrickLabel($"Player {playerIndex + 1} passed");
 
     private void HandleTrickWon(int playerIndex, List<string> cardIds)
         => playPanel.UpdateTrickLabel(
             $"Player {playerIndex + 1} won: {FormatCardList(cardIds)}");
 
-    private void HandlePlayerPassed(int playerIndex)
-        => playPanel.UpdateTrickLabel($"Player {playerIndex + 1} passed");
-    
-
     private void HandlePlayerFinished(int playerIndex)
         => playPanel.UpdateTrickLabel($"Player {playerIndex + 1} finished!");
+
+    private void HandleRoundScored(int team1Round, int team2Round, int team1Total, int team2Total)
+    {
+        playPanel.gameObject.SetActive(false);
+        roundSummaryPanel.Show(team1Round, team2Round, team1Total, team2Total);
+    }
 
     private void HandleGameWon(int teamIndex)
     {
         playPanel.gameObject.SetActive(false);
+        roundSummaryPanel.gameObject.SetActive(false);
         scorePanel.Show($"Team {teamIndex + 1} wins!");
     }
 
+
     private void ShowNextExchange()
     {
-        Debug.Log($"ShowNextExchange called, queue count: {_exchangeQueue?.Count ?? -1}");
         if (_exchangeQueue == null || _exchangeQueue.Count == 0) return;
-    
+
         int playerIndex = _exchangeQueue.Dequeue();
         var cardIds = _game.CurrentRound.Players[playerIndex].Hand
             .Select(c => c.ToString()).ToList();
-    
-        Debug.Log($"Showing exchange for player {playerIndex} with {cardIds.Count} cards");
+
         exchangePanel.ShowForPlayer(playerIndex, cardIds);
     }
-    
+
     private string FormatCardList(List<string> cardIds)
-    {
-        return string.Join(", ", cardIds.Select(FormatCard));
-    }
+        => string.Join(", ", cardIds.Select(FormatCard));
 
     private string FormatCard(string cardId)
     {
@@ -181,15 +191,15 @@ public class UnityBridge : MonoBehaviour
             "Ace"   => "A",  _       => parts[0]
         };
 
-        var suitSymbol = parts[1] switch
+        var suit = parts[1] switch
         {
             "Jade"   => "♦",
             "Sword"  => "♠",
             "Pagoda" => "♣",
-            "Star"   => "*",   // plain asterisk instead of ★
+            "Star"   => "*",
             _        => ""
         };
 
-        return $"{rank} {suitSymbol}";
+        return $"{rank} {suit}";
     }
 }

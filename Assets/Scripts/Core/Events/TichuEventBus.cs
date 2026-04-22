@@ -25,10 +25,17 @@ namespace Core.Events
         public event Action<int> OnDragonGiftNeeded;
         public event Action<int> OnPlayerFinished;
         public event Action<int> OnGameWon;
+        
+        public event Action<int, int, int, int> OnRoundScored;
+
 
         public TichuEventBus()
         {
         }
+        
+
+        public void RaiseRoundScored(int team1Round, int team2Round, int team1Total, int team2Total)
+            => OnRoundScored?.Invoke(team1Round, team2Round, team1Total, team2Total);
 
         public void RaiseFirstCardsDealt(IReadOnlyList<string> playerNames)
             => OnFirstCardsDealt?.Invoke(playerNames);
