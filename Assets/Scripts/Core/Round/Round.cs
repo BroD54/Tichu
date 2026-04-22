@@ -18,6 +18,9 @@ namespace Core.Round
         public List<Player> FinishOrder { get; }
         public Dictionary<Player, TichuCall> TichuCalls { get; }
         
+        public Action OnRoundComplete { get; set; }
+
+        
         public TichuEventBus Events { get; }
         
         private IRoundState _currentState;

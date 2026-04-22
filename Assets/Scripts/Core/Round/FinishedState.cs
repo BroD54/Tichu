@@ -4,6 +4,7 @@ namespace Core.Round
     {
         public void OnEnter(Round round)
         {
+            round.OnRoundComplete?.Invoke();
         }
 
         public void OnExit(Round round)
