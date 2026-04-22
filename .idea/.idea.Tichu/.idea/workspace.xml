@@ -6,18 +6,38 @@
   <component name="ChangeListManager">
     <list default="true" id="6a6f3710-e27c-476f-a957-76970ce2a1ee" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Tichu/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Tichu/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Card/Card.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Card/Card.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Events/TichuEventBus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Events/TichuEventBus.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Game/Trick.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Game/Trick.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/AdvanceTurnCommand.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/AdvanceTurnCommand.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/AwardTrickCommand.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/AwardTrickCommand.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/Command.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/Command.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/CommandFactory.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/CommandFactory.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/CommandInvoker.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/CommandInvoker.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/DeclareTichuCommand.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/DeclareTichuCommand.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/ExchangeCardsCommand.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/ExchangeCardsCommand.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/ICommand.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/ICommand.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/PlayCardsCommand.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/PlayCardsCommand.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/ScoreRoundCommand.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Commands/ScoreRoundCommand.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Round/CardsExchangeState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Round/CardsExchangeState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Round/DealRemainingCardsState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Round/DealRemainingCardsState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Round/DealingFirstCardsState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Round/DealingFirstCardsState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Round/FinishedState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Round/FinishedState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Round/GrandTichuCallsState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Round/GrandTichuCallsState.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Round/PlayingState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Round/PlayingState.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Round/Round.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Round/Round.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Round/ScoringState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Round/ScoringState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tests/Command.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tests/Command/CommandTests.asmdef" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tests/Command/CommandTests.asmdef.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tests/Command/CommandTests.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tests/Command/CommandTests.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tests/Observer/ObserverTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Tests/Observer/ObserverTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Unity/HandUIController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Unity/HandUIController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,12 +65,12 @@
     &quot;assignee&quot;: &quot;BroD54&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/BroD54/Tichu.git",
-    "accountId": "e2f56aed-3548-4662-8f48-c22558436153"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/BroD54/Tichu.git&quot;,
+    &quot;accountId&quot;: &quot;e2f56aed-3548-4662-8f48-c22558436153&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/.ai/mcp/mcp.json" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/Card/Card.cs" root0="FORCE_HIGHLIGHTING" />
@@ -111,6 +131,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Device#class com.jetbrains.rider.plugins.unity.run.devices.UnityEditorDeviceKind#com.jetbrains.rider.plugins.unity.run.devices.UnityDevicesProvider#Standalone Player: Start Unity": "Unity Editor",
     "Device#class com.jetbrains.rider.plugins.unity.run.devices.UnityEditorDeviceKind#com.jetbrains.rider.plugins.unity.run.devices.UnityDevicesProvider#Unity Attach To: Attach to": "Unity Editor",
     "DeviceKind#com.jetbrains.rider.plugins.unity.run.devices.UnityDevicesProvider": "Unity Editor",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
@@ -122,7 +143,7 @@
     "Standalone Player.Start Unity.executor": "Run",
     "Unity Attach To.Attach to.executor": "Debug",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "Round",
+    "git-widget-placeholder": "RemoveCommand",
     "ignore.virus.scanning.warn.message": "true",
     "junie.onboarding.icon.badge.shown": "true",
     "node.js.detected.package.eslint": "true",
@@ -135,7 +156,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Standalone Player.Start Unity">
+  <component name="RunManager" selected="Unity Attach To.Attach to">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="/Applications/Unity/Hub/Editor/6000.3.8f1/Unity.app/Contents/MacOS/Unity" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath $PROJECT_DIR$ -debugCodeOptimization" />
@@ -252,6 +273,19 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Tests/Observer/ObserverTest.cs</url>
+          <line>116</line>
+          <properties documentPath="$PROJECT_DIR$/Assets/Scripts/Tests/Observer/ObserverTest.cs" containingFunctionPresentation="Method 'TichuDeclared_CannotBeCalled_Twice'">
+            <startOffsets>
+              <option value="3366" />
+            </startOffsets>
+            <endOffsets>
+              <option value="3411" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

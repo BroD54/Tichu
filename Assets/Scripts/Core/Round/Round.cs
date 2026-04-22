@@ -66,6 +66,21 @@ namespace Core.Round
             return GetState<GrandTichuCallsState>()?.SubmitDecision(this, Players[playerIndex], calledGrandTichu) ??
                    false;
         }
+        
+        public bool SubmitTichuDeclaration(int playerIndex)
+        {
+            if (!IsValidIndex(playerIndex)) return false;
+
+            var player = Players[playerIndex];
+            if (player.Hand.Count != 14 || player.DeclaredTichu) return false;
+            
+            player.DeclareTichu();
+            TichuCalls[player] = TichuCall.Tichu;
+            
+            Events.RaiseTichuDeclared(playerIndex);
+            
+            return true;
+        }
 
         public bool SubmitCardExchange(int playerIndex, List<string> cardIds)
         {

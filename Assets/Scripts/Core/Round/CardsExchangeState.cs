@@ -56,6 +56,9 @@ namespace Core.Round
                 cardIds
             );
             
+            if (_pendingExchanges.Count == round.Players.Count)
+                round.TransitionToNext();
+            
             return true;
         }
     }

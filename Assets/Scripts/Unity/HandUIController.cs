@@ -11,14 +11,14 @@ public class HandUIController : MonoBehaviour
 
     private void OnEnable()
     {
-        TichuEventBus.OnFirstCardsDealt += HandleCardsDealt;
-        TichuEventBus.OnCardsPlayed    += HandleCardsPlayed;
+        // TichuEventBus.OnFirstCardsDealt += HandleCardsDealt;
+        // TichuEventBus.OnCardsPlayed    += HandleCardsPlayed;
     }
 
     private void OnDisable()
     {
-        TichuEventBus.OnFirstCardsDealt -= HandleCardsDealt;
-        TichuEventBus.OnCardsPlayed    -= HandleCardsPlayed;
+        // TichuEventBus.OnFirstCardsDealt -= HandleCardsDealt;
+        // TichuEventBus.OnCardsPlayed    -= HandleCardsPlayed;
     }
 
     private void HandleCardsDealt(IReadOnlyList<Player> players)

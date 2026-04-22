@@ -1,11 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Core.Combination;
-using Core.Commands;
-using Core.Events;
-using Core.Game;
-using Core.Player;
-using UnityEngine.LowLevel;
+
 
 namespace Core.Round
 {
@@ -63,6 +59,12 @@ namespace Core.Round
             
                 player.RemoveCards(cards);
                 round.Events.RaiseCardsPlayed(round.Players.IndexOf(player), cardIds);
+
+                if (player.Hand.Count == 0)
+                {
+                    round.FinishOrder.Add(player);
+                    round.Events.RaisePlayerFinished(round.Players.IndexOf(player));
+                }
             }
 
             AdvanceTurn(round);
@@ -81,7 +83,7 @@ namespace Core.Round
         private void CheckTrickOver(Round round)
         {
             Player winner = round.CurrentTrick.DetermineWinner();
-            if (winner != null) return;
+            if (winner == null) return;
             
             List<Card> trickCards = round.CurrentTrick.Cards;
             winner.TricksWon.Add(trickCards);
