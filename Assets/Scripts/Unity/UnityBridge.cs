@@ -90,7 +90,15 @@ public class UnityBridge : MonoBehaviour
     }
 
     private void HandleCardsExchanged(int playerIndex, List<string> cardIds)
-        => ShowNextExchange();
+    {
+        StartCoroutine(ShowNextExchangeNextFrame());
+    }
+
+    private IEnumerator ShowNextExchangeNextFrame()
+    {
+        yield return null;
+        ShowNextExchange();
+    }
 
     private void HandleTurnChanged(int playerIndex)
     {
@@ -120,10 +128,14 @@ public class UnityBridge : MonoBehaviour
 
     private void ShowNextExchange()
     {
+        Debug.Log($"ShowNextExchange called, queue count: {_exchangeQueue?.Count ?? -1}");
         if (_exchangeQueue == null || _exchangeQueue.Count == 0) return;
+    
         int playerIndex = _exchangeQueue.Dequeue();
         var cardIds = _game.CurrentRound.Players[playerIndex].Hand
             .Select(c => c.ToString()).ToList();
+    
+        Debug.Log($"Showing exchange for player {playerIndex} with {cardIds.Count} cards");
         exchangePanel.ShowForPlayer(playerIndex, cardIds);
     }
 }

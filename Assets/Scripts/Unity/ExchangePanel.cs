@@ -12,7 +12,7 @@ public class ExchangePanel : MonoBehaviour
 
     private int _currentPlayerIndex;
 
-    void Start()
+    void Awake()
     {
         confirmButton.onClick.AddListener(OnConfirmClicked);
     }
@@ -26,16 +26,19 @@ public class ExchangePanel : MonoBehaviour
         handUI.SetInteractable(true);
     }
 
-    private void OnConfirmClicked()
+    public void OnConfirmClicked()
     {
         var selected = handUI.GetSelectedCardIds();
+        Debug.Log($"Selected {selected.Count} cards: {string.Join(", ", selected)}");
+    
         if (selected.Count != 3)
         {
-            instructionLabel.text = "Select exactly 3 cards";
+            instructionLabel.text = $"Select exactly 3 cards (you selected {selected.Count})";
             return;
         }
 
         gameObject.SetActive(false);
+        Debug.Log($"Submitting exchange for player {_currentPlayerIndex}");
         bridge.OnCardExchangeSubmitted(_currentPlayerIndex, selected);
     }
 }

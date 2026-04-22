@@ -11,7 +11,7 @@ public class GrandTichuPanel : MonoBehaviour
 
     private int _currentPlayerIndex;
 
-    void Start()
+    void Awake()
     {
         yesButton.onClick.AddListener(OnYesClicked);
         noButton.onClick.AddListener(OnNoClicked);

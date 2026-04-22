@@ -7,7 +7,7 @@ public class ScorePanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI resultLabel;
     [SerializeField] private Button restartButton;
 
-    void Start()
+    void Awake()
     {
         restartButton.onClick.AddListener(OnRestartClicked);
     }

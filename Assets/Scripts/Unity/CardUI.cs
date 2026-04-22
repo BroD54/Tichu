@@ -7,35 +7,36 @@ public class CardUI : MonoBehaviour
     public string CardId { get; private set; }
     public bool IsSelected { get; private set; }
 
-    [SerializeField] private Button button;
-    [SerializeField] private Image background;
-
-    [SerializeField] private TMP_Text label;
+    private Button _button;
+    private Image _background;
+    private TMP_Text _label;
 
     void Awake()
     {
-        button.onClick.AddListener(OnClicked);
+        _button     = GetComponent<Button>();
+        _background = GetComponent<Image>();
+        _label      = GetComponentInChildren<TMP_Text>();
+
+        Debug.Log($"CardUI Awake — button={_button}, background={_background}, label={_label}");
+
+        _button.onClick.AddListener(OnClicked);
     }
 
     public void Init(string cardId)
     {
-        Debug.Log($"label={label}, background={background}, cardId={cardId}");
-        
-        CardId = cardId;
-
-        label.text = cardId;
-
-        IsSelected = false;
-        background.color = Color.white;
+        CardId           = cardId;
+        _label.text      = cardId;
+        IsSelected       = false;
+        _background.color = Color.white;
     }
-    
+
     public void SetInteractable(bool interactable)
-        =>  button.interactable = interactable;
+        => _button.interactable = interactable;
 
     private void OnClicked()
     {
-        Debug.Log($"cardId={CardId}");
         IsSelected = !IsSelected;
-        background.color = IsSelected ? Color.yellow : Color.white;
+        _background.color = IsSelected ? Color.yellow : Color.white;
+        Debug.Log($"Card clicked: {CardId}, IsSelected: {IsSelected}, this.GetInstanceID(): {GetInstanceID()}");
     }
 }

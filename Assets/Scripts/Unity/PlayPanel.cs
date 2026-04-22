@@ -15,7 +15,7 @@ public class PlayPanel : MonoBehaviour
 
     private int _currentPlayerIndex;
 
-    void Start()
+    void Awake()
     {
         playButton.onClick.AddListener(OnPlayClicked);
         passButton.onClick.AddListener(OnPassClicked);

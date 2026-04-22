@@ -12,12 +12,17 @@ public class HandUI : MonoBehaviour
 
     public void ShowHand(List<string> cardIds)
     {
-        Debug.Log("ShowHand called with " + cardIds.Count + " cards");
-
-        foreach (Transform child in cardContainer)
-            Destroy(child.gameObject);
+        // Clear list first
         _cards.Clear();
+    
+        // Destroy all children immediately
+        List<Transform> children = new List<Transform>();
+        foreach (Transform child in cardContainer)
+            children.Add(child);
+        foreach (Transform child in children)
+            DestroyImmediate(child.gameObject);
 
+        // Build fresh
         foreach (var id in cardIds)
         {
             var obj  = Instantiate(cardPrefab, cardContainer, false);
@@ -25,6 +30,8 @@ public class HandUI : MonoBehaviour
             card.Init(id);
             _cards.Add(card);
         }
+
+        Debug.Log($"ShowHand built {_cards.Count} cards");
     }
 
     public void SetInteractable(bool interactable)
@@ -33,6 +40,11 @@ public class HandUI : MonoBehaviour
             card.SetInteractable(interactable);
     }
 
-    public List<string> GetSelectedCardIds() =>
-        _cards.Where(c => c.IsSelected).Select(c => c.CardId).ToList();
+    public List<string> GetSelectedCardIds()
+    {
+        foreach (var card in _cards)
+            Debug.Log($"Card in list: {card.CardId}, IsSelected: {card.IsSelected}, ID: {card.GetInstanceID()}");
+    
+        return _cards.Where(c => c.IsSelected).Select(c => c.CardId).ToList();
+    }
 }
