@@ -3,81 +3,78 @@ using System.Collections.Generic;
 
 namespace Core.Events
 {
-    using Player;
-    using Card;
-    using Combination;
-
-    public static class TichuEventBus
+    public class TichuEventBus
     {
-        public static event Action<IReadOnlyList<Player>> OnFirstCardsDealt;
-        public static event Action<IReadOnlyList<Player>> OnAllCardsDealt;
+        public event Action<IReadOnlyList<string>> OnFirstCardsDealt;
+        public event Action<IReadOnlyList<string>> OnAllCardsDealt;
 
-        public static event Action<GrandTichuDecisionNeededEvent> OnGrandTichuDecisionNeeded;
-        public static event Action<int> OnGrandTichuDeclared;
+        public event Action<string, int> OnGrandTichuDecisionNeeded;
+        public event Action<int> OnGrandTichuDeclared;
+        public event Action<int> OnTichuDeclared;
 
-        public static event Action<int> OnTichuDeclared;
+        public event Action OnExchangePhaseStarted;
+        public event Action<int, List<string>> OnCardsExchanged;
 
-        public static event Action OnExchangePhaseStarted;
-        public static event Action<int, IReadOnlyList<Card>> OnCardsExchanged;
+        public event Action<int> OnTurnChanged;
+        public event Action<int, List<string>> OnCardsPlayed;
+        public event Action<int> OnPlayerPassed;
+        public event Action<int, List<string>> OnTrickWon;
+        public event Action<int, List<string>> OnBombPlayed;
+        public event Action<int, int> OnWishMade;
+        public event Action<int> OnDragonGiftNeeded;
+        public event Action<int> OnPlayerFinished;
+        public event Action<int> OnGameWon;
 
-        public static event Action<int> OnTurnChanged;
-        public static event Action<int, IReadOnlyList<Card>, Combination> OnCardsPlayed;
-        public static event Action<int> OnPlayerPassed;
-        public static event Action<int, IReadOnlyList<Card>> OnTrickWon;
-        public static event Action<int, IReadOnlyList<Card>> OnBombPlayed;
-        public static event Action<int, int> OnWishMade;
-        public static event Action<int> OnDragonGiftNeeded;
+        public TichuEventBus()
+        {
+        }
 
-        public static event Action<int> OnPlayerFinished;
-        public static event Action<int> OnGameWon;
+        public void RaiseFirstCardsDealt(IReadOnlyList<string> playerNames)
+            => OnFirstCardsDealt?.Invoke(playerNames);
 
-        internal static void RaiseFirstCardsDealt(IReadOnlyList<Player> p)
-            => OnFirstCardsDealt?.Invoke(p);
+        public void RaiseAllCardsDealt(IReadOnlyList<string> playerNames)
+            => OnAllCardsDealt?.Invoke(playerNames);
 
-        internal static void RaiseAllCardsDealt(IReadOnlyList<Player> p)
-            => OnAllCardsDealt?.Invoke(p);
+        public void RaiseGrandTichuDecisionNeeded(string playerName, int playerIndex)
+            => OnGrandTichuDecisionNeeded?.Invoke(playerName, playerIndex);
 
-        internal static void RaiseGrandTichuDecisionNeeded(GrandTichuDecisionNeededEvent e)
-            => OnGrandTichuDecisionNeeded?.Invoke(e);
-
-        internal static void RaiseGrandTichuDeclared(int playerIndex)
+        public void RaiseGrandTichuDeclared(int playerIndex)
             => OnGrandTichuDeclared?.Invoke(playerIndex);
 
-        internal static void RaiseTichuDeclared(int playerIndex)
+        public void RaiseTichuDeclared(int playerIndex)
             => OnTichuDeclared?.Invoke(playerIndex);
 
-        internal static void RaiseExchangePhaseStarted()
+        public void RaiseExchangePhaseStarted()
             => OnExchangePhaseStarted?.Invoke();
 
-        internal static void RaiseCardsExchanged(int playerIndex, IReadOnlyList<Card> cards)
-            => OnCardsExchanged?.Invoke(playerIndex, cards);
+        public void RaiseCardsExchanged(int playerIndex, List<string> cardIds)
+            => OnCardsExchanged?.Invoke(playerIndex, cardIds);
 
-        internal static void RaiseTurnChanged(int playerIndex)
+        public void RaiseTurnChanged(int playerIndex)
             => OnTurnChanged?.Invoke(playerIndex);
 
-        internal static void RaiseCardsPlayed(int playerIndex, IReadOnlyList<Card> cards, Combination combo)
-            => OnCardsPlayed?.Invoke(playerIndex, cards, combo);
+        public void RaiseCardsPlayed(int playerIndex, List<string> cardIds)
+            => OnCardsPlayed?.Invoke(playerIndex, cardIds);
 
-        internal static void RaisePlayerPassed(int playerIndex)
+        public void RaisePlayerPassed(int playerIndex)
             => OnPlayerPassed?.Invoke(playerIndex);
 
-        internal static void RaiseTrickWon(int playerIndex, IReadOnlyList<Card> cards)
-            => OnTrickWon?.Invoke(playerIndex, cards);
+        public void RaiseTrickWon(int playerIndex, List<string> cardIds)
+            => OnTrickWon?.Invoke(playerIndex, cardIds);
 
-        internal static void RaiseBombPlayed(int playerIndex, IReadOnlyList<Card> cards)
-            => OnBombPlayed?.Invoke(playerIndex, cards);
+        public void RaiseBombPlayed(int playerIndex, List<string> cardIds)
+            => OnBombPlayed?.Invoke(playerIndex, cardIds);
 
-        internal static void RaiseWishMade(int playerIndex, int rank)
+        public void RaiseWishMade(int playerIndex, int rank)
             => OnWishMade?.Invoke(playerIndex, rank);
 
-        internal static void RaiseDragonGiftNeeded(int winnerIndex)
+        public void RaiseDragonGiftNeeded(int winnerIndex)
             => OnDragonGiftNeeded?.Invoke(winnerIndex);
 
-        internal static void RaisePlayerFinished(int playerIndex)
+        public void RaisePlayerFinished(int playerIndex)
             => OnPlayerFinished?.Invoke(playerIndex);
-        
 
-        internal static void RaiseGameWon(int teamIndex)
+        public void RaiseGameWon(int teamIndex)
             => OnGameWon?.Invoke(teamIndex);
     }
 }

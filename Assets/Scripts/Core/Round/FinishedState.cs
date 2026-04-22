@@ -4,17 +4,16 @@ namespace Core.Round
     {
         public void OnEnter(Round round)
         {
-            throw new System.NotImplementedException();
         }
 
         public void OnExit(Round round)
         {
-            throw new System.NotImplementedException();
         }
 
         public IRoundState NextState()
         {
-            throw new System.NotImplementedException();
+            throw new System.InvalidOperationException(
+                "Round is finished, no next step exists");        
         }
     }
 }

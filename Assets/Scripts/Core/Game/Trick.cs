@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace Core.Game
 {
     using Player;
     using Combination;
+    using Card;
     
     public class Trick
     {
@@ -12,6 +14,11 @@ namespace Core.Game
         public Player Leader { get; }
         [CanBeNull] public Combination  CurrentCombination { get; private set; }
         [CanBeNull] public Player CurrentWinner { get; private set; }
+        
+        public List<Card> Cards =>
+            Moves.Where(move => !move.IsPass)
+                .SelectMany(move => move.Combination.Cards)
+                .ToList();
 
         public Trick(Player player, List<Move> moves)
         {

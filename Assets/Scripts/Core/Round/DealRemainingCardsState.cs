@@ -1,3 +1,4 @@
+using System.Linq;
 using Core.Game;
 
 namespace Core.Round
@@ -7,6 +8,8 @@ namespace Core.Round
         public void OnEnter(Round round)
         {
             round.Deck.Deal(round.Players, Deck.SecondDealCount);
+            round.Events.RaiseAllCardsDealt(round.Players.Select(player => player.Name).ToList());
+            round.TransitionToNext();
         }
 
         public void OnExit(Round round)

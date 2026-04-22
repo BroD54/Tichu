@@ -12,7 +12,10 @@ namespace Core.Round
         {
             _pendingResponses = round.Players.Count;
             foreach (var player in round.Players)
-                round.FireGrandTichuDecisionNeeded(player);
+                round.Events.RaiseGrandTichuDecisionNeeded(
+                    player.Name, 
+                    round.Players.IndexOf(player)
+                );
         }
 
         public void OnExit(Round round)
@@ -32,7 +35,7 @@ namespace Core.Round
             if (calledGrandTichu)
             {
                 player.DeclareGrandTichu();
-                TichuEventBus.RaiseGrandTichuDeclared(round.Players.IndexOf(player));  // ← add
+                round.Events.RaiseGrandTichuDeclared(round.Players.IndexOf(player));
 
             }
 

@@ -29,10 +29,10 @@
                 _move.Player.RemoveCards(new List<Card>(_move.Combination.Cards));
 
             var state = _round.GetState<PlayingState>();
-            if (_move.IsPass)
-                state?.NotifyPlayerPassed(_round, _move.Player);
-            else
-                state?.NotifyCardsPlayed(_round, _move.Player, _move);
+            // if (_move.IsPass)
+            //     state?.NotifyPlayerPassed(_round, _move.Player);
+            // else
+            //     state?.NotifyCardsPlayed(_round, _move.Player, _move);
         }
     }
 }

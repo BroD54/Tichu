@@ -21,6 +21,16 @@ namespace Core.Card {
             this.Suit = suit;
             this.Type = type;
         }
+        
+        public override string ToString() => Type switch
+        {
+            CardType.Standard => $"{Rank}_{Suit}",
+            CardType.Mahjong  => "Special_Mahjong",
+            CardType.Dragon   => "Special_Dragon",
+            CardType.Phoenix  => "Special_Phoenix",
+            CardType.Dog      => "Special_Dog",
+            _ => $"{Rank}_{Suit}"
+        };
     }
 
 }

@@ -1,3 +1,4 @@
+using System.Linq;
 using Core.Events;
 using Core.Game;
 
@@ -9,7 +10,7 @@ namespace Core.Round
         public void OnEnter(Round round)
         {
             round.Deck.Deal(round.Players, Deck.FirstDealCount);
-            TichuEventBus.RaiseFirstCardsDealt(round.Players);  // ← add this
+            round.Events.RaiseFirstCardsDealt(round.Players.Select(player => player.Name).ToList());
             round.TransitionToNext();
         }
 

@@ -35,26 +35,15 @@ namespace Tests.Observer
             _commandFactory = new CommandFactory();
             _combinationFactory = new CombinationFactory();
         }
-
-        [TearDown]
-        public void TearDown()
-        {
-            TichuEventBus.OnGrandTichuDecisionNeeded -= null;
-            TichuEventBus.OnGrandTichuDeclared       -= null;
-            TichuEventBus.OnTichuDeclared            -= null;
-            TichuEventBus.OnCardsPlayed              -= null;
-            TichuEventBus.OnPlayerPassed             -= null;
-            TichuEventBus.OnTrickWon                 -= null;
-            TichuEventBus.OnBombPlayed               -= null;
-            TichuEventBus.OnPlayerFinished           -= null;
-            TichuEventBus.OnTurnChanged              -= null;
-        }
         
         [Test]
         public void GrandTichuDecisionNeededContainsCorrectPlayerNames()
         {
             var received = new List<GrandTichuDecisionNeededEvent>();
-            TichuEventBus.OnGrandTichuDecisionNeeded += e => received.Add(e);
+            var players = new List<Player> { new HumanPlayer("P1"), new HumanPlayer("P2") };
+
+            
+            _round.Events.OnGrandTichuDecisionNeeded += e => received.Add(e);
 
             var round = new Round(
                 new List<Player> { _player1, _player2 },
@@ -69,7 +58,7 @@ namespace Tests.Observer
         public void GrandTichuDeclaredFiredWhenPlayerCallsGrandTichu()
         {
             int firedForIndex = -1;
-            TichuEventBus.OnGrandTichuDeclared += idx => firedForIndex = idx;
+            _round.Events.OnGrandTichuDeclared += idx => firedForIndex = idx;
 
             _round.SubmitGrandTichuDecision(0, true);
 
@@ -80,7 +69,7 @@ namespace Tests.Observer
         public void GrandTichuDeclaredNotFiredWhenPlayerDeclines()
         {
             bool fired = false;
-            TichuEventBus.OnGrandTichuDeclared += _ => fired = true;
+            _round.Events.OnGrandTichuDeclared += _ => fired = true;
 
             _round.SubmitGrandTichuDecision(0, false);
 
@@ -91,7 +80,7 @@ namespace Tests.Observer
         public void CardsPlayedNotFiredWhenTrickIsNull()
         {
             bool fired = false;
-            TichuEventBus.OnCardsPlayed += (_, __, ___) => fired = true;
+            _round.Events.OnCardsPlayed += (_, __, ___) => fired = true;
 
             var card = new Card(Rank.King, Suit.Jade, CardType.Standard);
             _player1.ReceiveCards(new List<Card> { card });
@@ -116,7 +105,7 @@ namespace Tests.Observer
             _commandFactory.CreatePlayCardsCommand(round, firstMove).Execute();
 
             int passedIndex = -1;
-            TichuEventBus.OnPlayerPassed += idx => passedIndex = idx;
+            _round.Events.OnPlayerPassed += idx => passedIndex = idx;
 
             var passMove = new Move(_player2, null);
             _commandFactory.CreatePlayCardsCommand(round, passMove).Execute();
@@ -142,7 +131,7 @@ namespace Tests.Observer
             var combo = _combinationFactory.Create(cards);
 
             bool fired = false;
-            TichuEventBus.OnBombPlayed += (_, __) => fired = true;
+            _round.Events.OnBombPlayed += (_, __) => fired = true;
 
             _commandFactory.CreatePlayCardsCommand(round, new Move(_player1, combo)).Execute();
 
@@ -159,7 +148,7 @@ namespace Tests.Observer
             var combo = _combinationFactory.Create(new List<Card> { card });
 
             int finishedIndex = -1;
-            TichuEventBus.OnPlayerFinished += idx => finishedIndex = idx;
+            _round.Events.OnPlayerFinished += idx => finishedIndex = idx;
 
             _commandFactory.CreatePlayCardsCommand(round, new Move(_player1, combo)).Execute();
 
@@ -180,7 +169,7 @@ namespace Tests.Observer
             var combo = _combinationFactory.Create(new List<Card> { cards[0] });
 
             bool fired = false;
-            TichuEventBus.OnPlayerFinished += _ => fired = true;
+            _round.Events.OnPlayerFinished += _ => fired = true;
 
             _commandFactory.CreatePlayCardsCommand(round, new Move(_player1, combo)).Execute();
 
@@ -192,7 +181,7 @@ namespace Tests.Observer
         public void TichuDeclaredFiredWhenDeclareTichuCommandExecutes()
         {
             int firedForIndex = -1;
-            TichuEventBus.OnTichuDeclared += idx => firedForIndex = idx;
+            _round.Events.OnTichuDeclared += idx => firedForIndex = idx;
 
             var command = _commandFactory.CreateDeclareTichuCommand(_round, _player1, TichuCall.Tichu);
             command.Execute();
@@ -204,7 +193,7 @@ namespace Tests.Observer
         public void TichuDeclaredNotFiredForGrandTichuCall()
         {
             bool fired = false;
-            TichuEventBus.OnTichuDeclared += _ => fired = true;
+            _round.Events.OnTichuDeclared += _ => fired = true;
 
             var command = _commandFactory.CreateDeclareTichuCommand(_round, _player1, TichuCall.GrandTichu);
             command.Execute();

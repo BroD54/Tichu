@@ -10,15 +10,27 @@ namespace Core.Round
 
         public void OnEnter(Round round)
         {
-            var command = new ScoreRoundCommand(round, _scoringService);
-            command.Execute();
-
+            RoundResult result = _scoringService.Calculate(
+                round.FinishOrder,
+                round.Teams,
+                round.TichuCalls
+            );
+            
+            foreach (var (team, points) in result.PointsEarned)
+                team.UpdateScore(points);
+            
+            foreach (var team in round.Teams)
+            {
+                if (team.Score < 1000) continue;
+                
+                round.Events.RaiseGameWon(team.Id);
+                break;
+            }
             round.TransitionToNext();
         }
 
         public void OnExit(Round round)
         {
-            throw new System.NotImplementedException();
         }
 
         public IRoundState NextState()

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using JetBrains.Annotations;
 
 namespace Core.Round
 {
     using Player;
-    using Combination;
     using Game;
     using Events;
     
@@ -16,14 +14,14 @@ namespace Core.Round
         public List<Team>  Teams { get; }
         public Deck Deck { get; }
         public int CurrentPlayerIndex { get; internal set; }
-        [CanBeNull] public Trick CurrentTrick { get; internal set; }
+        public Trick CurrentTrick { get; internal set; }
         public List<Player> FinishOrder { get; }
         public Dictionary<Player, TichuCall> TichuCalls { get; }
         
+        public TichuEventBus Events { get; }
+        
         private IRoundState _currentState;
         
-        public event Action<GrandTichuDecisionNeededEvent> OnGrandTichuDecisionNeeded;
-
         public Round(List<Player> players, List<Team> teams, Deck deck)
         {
             Players = players;
@@ -32,8 +30,8 @@ namespace Core.Round
             
             FinishOrder = new List<Player>();
             TichuCalls = new Dictionary<Player, TichuCall>();
-
             CurrentTrick = null;
+            Events = new TichuEventBus();
             
             _currentState = RoundStateFactory.Create(RoundPhase.DealingFirstCards);
             _currentState.OnEnter(this);
@@ -69,9 +67,20 @@ namespace Core.Round
                    false;
         }
 
-        internal void FireGrandTichuDecisionNeeded(Player player)
+        public bool SubmitCardExchange(int playerIndex, List<string> cardIds)
         {
-            TichuEventBus.RaiseGrandTichuDecisionNeeded(new GrandTichuDecisionNeededEvent(player.Name, Players.IndexOf(player)));
+            if (!IsValidIndex(playerIndex)) return false;
+            
+            return GetState<CardsExchangeState>()
+                ?.SubmitExchange(this, Players[playerIndex], cardIds) ?? false;
+        }
+
+        public bool SubmitMove(int playerIndex, List<string> cardIds)
+        {
+            if (!IsValidIndex(playerIndex)) return false;
+            
+            return GetState<PlayingState>()
+                ?.SubmitMove(this, Players[playerIndex], cardIds) ?? false;
         }
 
     }

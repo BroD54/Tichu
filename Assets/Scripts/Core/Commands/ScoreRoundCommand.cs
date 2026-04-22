@@ -32,7 +32,7 @@
             {
                 if (team.Score >= 1000)
                 {
-                    TichuEventBus.RaiseGameWon(team.Id);
+                    // TichuEventBus.RaiseGameWon(team.Id);
                     break;
                 }
             }
