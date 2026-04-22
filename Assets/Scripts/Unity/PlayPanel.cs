@@ -22,17 +22,23 @@ public class PlayPanel : MonoBehaviour
         tichuButton.onClick.AddListener(OnTichuClicked);
     }
 
+    private string _lastTrickText = "";
+
+    public void UpdateTrickLabel(string text)
+    {
+        _lastTrickText = text;
+        trickLabel.text = text;
+    }
+
     public void ShowTurn(int playerIndex, List<string> cardIds)
     {
         gameObject.SetActive(true);
         _currentPlayerIndex = playerIndex;
         turnLabel.text      = $"Player {playerIndex + 1}'s turn";
+        trickLabel.text     = _lastTrickText;
         handUI.ShowHand(cardIds);
         handUI.SetInteractable(true);
     }
-
-    public void UpdateTrickLabel(string text)
-        => trickLabel.text = text;
 
     private void OnPlayClicked()
     {

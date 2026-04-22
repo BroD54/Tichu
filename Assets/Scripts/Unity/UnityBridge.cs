@@ -102,20 +102,29 @@ public class UnityBridge : MonoBehaviour
 
     private void HandleTurnChanged(int playerIndex)
     {
-        var cardIds = _game.CurrentRound.Players[playerIndex].Hand
-            .Select(c => c.ToString()).ToList();
+        var player = _game.CurrentRound.Players[playerIndex];
+    
+        if (player.Hand.Count == 0)
+        {
+            return;
+        }
+
+        var cardIds = player.Hand
+            .Select(c => c.ToString())
+            .ToList();
         playPanel.ShowTurn(playerIndex, cardIds);
     }
-
     private void HandleCardsPlayed(int playerIndex, List<string> cardIds)
         => playPanel.UpdateTrickLabel(
-            $"Player {playerIndex + 1} played: {string.Join(", ", cardIds)}");
+            $"Player {playerIndex + 1} played: {FormatCardList(cardIds)}");
+
+    private void HandleTrickWon(int playerIndex, List<string> cardIds)
+        => playPanel.UpdateTrickLabel(
+            $"Player {playerIndex + 1} won: {FormatCardList(cardIds)}");
 
     private void HandlePlayerPassed(int playerIndex)
         => playPanel.UpdateTrickLabel($"Player {playerIndex + 1} passed");
-
-    private void HandleTrickWon(int playerIndex, List<string> cardIds)
-        => playPanel.UpdateTrickLabel($"Player {playerIndex + 1} won the trick");
+    
 
     private void HandlePlayerFinished(int playerIndex)
         => playPanel.UpdateTrickLabel($"Player {playerIndex + 1} finished!");
@@ -137,5 +146,50 @@ public class UnityBridge : MonoBehaviour
     
         Debug.Log($"Showing exchange for player {playerIndex} with {cardIds.Count} cards");
         exchangePanel.ShowForPlayer(playerIndex, cardIds);
+    }
+    
+    private string FormatCardList(List<string> cardIds)
+    {
+        return string.Join(", ", cardIds.Select(FormatCard));
+    }
+
+    private string FormatCard(string cardId)
+    {
+        if (cardId.StartsWith("Special"))
+        {
+            return cardId.Split('_')[1] switch
+            {
+                "Mahjong" => "1",
+                "Dragon"  => "Dr",
+                "Phoenix" => "Ph",
+                "Dog"     => "Dog",
+                _         => cardId
+            };
+        }
+
+        var parts = cardId.Split('_');
+        if (parts.Length < 2) return cardId;
+
+        var rank = parts[0] switch
+        {
+            "Two"   => "2",  "Three" => "3",
+            "Four"  => "4",  "Five"  => "5",
+            "Six"   => "6",  "Seven" => "7",
+            "Eight" => "8",  "Nine"  => "9",
+            "Ten"   => "10", "Jack"  => "J",
+            "Queen" => "Q",  "King"  => "K",
+            "Ace"   => "A",  _       => parts[0]
+        };
+
+        var suitSymbol = parts[1] switch
+        {
+            "Jade"   => "♦",
+            "Sword"  => "♠",
+            "Pagoda" => "♣",
+            "Star"   => "*",   // plain asterisk instead of ★
+            _        => ""
+        };
+
+        return $"{rank} {suitSymbol}";
     }
 }

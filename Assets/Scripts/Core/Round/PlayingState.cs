@@ -13,6 +13,7 @@ namespace Core.Round
     {
         CombinationFactory _combinationFactory = new  CombinationFactory();
         
+        private bool _waitingForDragonGift = false;
         public void OnEnter(Round round)
         {
             Player lead = round.Players.Find(player => player.HasMahjong);
@@ -76,35 +77,100 @@ namespace Core.Round
 
         private void AdvanceTurn(Round round)
         {
-            round.CurrentPlayerIndex = (round.CurrentPlayerIndex + 1) % round.Players.Count;
+            int startIndex = round.CurrentPlayerIndex;
+            int next = startIndex;
+
+            do
+            {
+                next = (next + 1) % round.Players.Count;
+                if (next == startIndex) break; // full loop, no active players
+            } while (round.Players[next].Hand.Count == 0);
+
+            round.CurrentPlayerIndex = next;
+            round.Events.RaiseTurnChanged(round.CurrentPlayerIndex);
+        }
+        private void CheckTrickOver(Round round)
+        {
+            Player winner = round.CurrentTrick.DetermineWinner(round.Players);
+            if (winner == null) return;
+
+            List<Card> trickCards = round.CurrentTrick.Cards;
+
+            // if (round.CurrentTrick.WonWithDragon)
+            // {
+            //     _waitingForDragonGift = true;
+            //     round.Events.RaiseDragonGiftNeeded(round.Players.IndexOf(winner));
+            //     return;
+            // }
+
+            AwardTrick(round, winner, trickCards);
+        }
+
+        private void AwardTrick(Round round, Player winner, List<Card> trickCards)
+        {
+            winner.TricksWon.Add(trickCards);
+            round.Events.RaiseTrickWon(
+                round.Players.IndexOf(winner),
+                trickCards.Select(c => c.ToString()).ToList());
+
+            if (winner.Hand.Count == 0)
+            {
+                if (!round.FinishOrder.Contains(winner))
+                {
+                    round.FinishOrder.Add(winner);
+                    round.Events.RaisePlayerFinished(round.Players.IndexOf(winner));
+                }
+            }
+
+            CheckRoundOver(round);
+            if (round.IsInState<FinishedState>()) return;
+
+            // Find next active player to lead — skip finished players
+            Player nextLeader = FindNextActivePlayer(round, winner);
+
+            if (nextLeader == null)
+            {
+                round.TransitionToNext();
+                return;
+            }
+
+            round.CurrentTrick = new Trick(nextLeader, new List<Move>());
+            round.CurrentPlayerIndex = round.Players.IndexOf(nextLeader);
             round.Events.RaiseTurnChanged(round.CurrentPlayerIndex);
         }
 
-        private void CheckTrickOver(Round round)
+        private Player FindNextActivePlayer(Round round, Player startingFrom)
         {
-            Player winner = round.CurrentTrick.DetermineWinner();
-            if (winner == null) return;
-            
-            List<Card> trickCards = round.CurrentTrick.Cards;
-            winner.TricksWon.Add(trickCards);
-            
-            round.Events.RaiseTrickWon(
-                round.Players.IndexOf(winner), 
-                trickCards.Select(card => card.ToString()).ToList()
-            );
-            
-            round.CurrentTrick = new Trick(winner, new List<Move>());
-            round.CurrentPlayerIndex = round.Players.IndexOf(winner);
-            round.Events.RaiseTurnChanged(round.CurrentPlayerIndex);
+            // If winner still has cards they lead
+            if (startingFrom.Hand.Count > 0) return startingFrom;
+
+            // Otherwise find next player with cards
+            int startIndex = round.Players.IndexOf(startingFrom);
+            for (int i = 1; i < round.Players.Count; i++)
+            {
+                int index = (startIndex + i) % round.Players.Count;
+                if (round.Players[index].Hand.Count > 0)
+                    return round.Players[index];
+            }
+
+            return null;
         }
         
         
         private void CheckRoundOver(Round round)
         {
             var activePlayers = round.Players.Count(p => p.Hand.Count > 0);
-            if (activePlayers > 1) return;
-
-            round.TransitionToNext();
+    
+            if (activePlayers <= 1)
+            {
+                var lastPlayer = round.Players.FirstOrDefault(p => p.Hand.Count > 0);
+                if (lastPlayer != null)
+                {
+                    round.FinishOrder.Add(lastPlayer);
+                    round.Events.RaisePlayerFinished(round.Players.IndexOf(lastPlayer));
+                }
+                round.TransitionToNext();
+            }
         }
     }
 }

@@ -23,7 +23,10 @@ public class HandUI : MonoBehaviour
             DestroyImmediate(child.gameObject);
 
         // Build fresh
-        foreach (var id in cardIds)
+        var sorted = SortCardIds(cardIds);
+
+        
+        foreach (var id in sorted)
         {
             var obj  = Instantiate(cardPrefab, cardContainer, false);
             var card = obj.GetComponent<CardUI>();
@@ -46,5 +49,44 @@ public class HandUI : MonoBehaviour
             Debug.Log($"Card in list: {card.CardId}, IsSelected: {card.IsSelected}, ID: {card.GetInstanceID()}");
     
         return _cards.Where(c => c.IsSelected).Select(c => c.CardId).ToList();
+    }
+    
+    private List<string> SortCardIds(List<string> cardIds)
+    {
+        var specials = new[] { "Special_Mahjong", "Special_Dog", "Special_Phoenix", "Special_Dragon" };
+    
+        var normal  = cardIds.Where(id => !specials.Contains(id)).ToList();
+        var special = cardIds.Where(id => specials.Contains(id)).ToList();
+
+        normal.Sort((a, b) =>
+        {
+            int rankA = GetRankValue(a);
+            int rankB = GetRankValue(b);
+            return rankA.CompareTo(rankB);
+        });
+
+        return normal.Concat(special).ToList();
+    }
+
+    private int GetRankValue(string cardId)
+    {
+        var rank = cardId.Split('_')[0];
+        return rank switch
+        {
+            "Two"   => 2,
+            "Three" => 3,
+            "Four"  => 4,
+            "Five"  => 5,
+            "Six"   => 6,
+            "Seven" => 7,
+            "Eight" => 8,
+            "Nine"  => 9,
+            "Ten"   => 10,
+            "Jack"  => 11,
+            "Queen" => 12,
+            "King"  => 13,
+            "Ace"   => 14,
+            _       => 0
+        };
     }
 }
