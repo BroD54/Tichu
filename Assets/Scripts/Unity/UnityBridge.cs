@@ -31,7 +31,7 @@ public class UnityBridge : MonoBehaviour
             new Team(1, players[1], players[3])
         };
 
-        _game = new Game(players, teams);
+        _game = Game.GetInstance(players, teams);
 
         _game.Events.OnGrandTichuDecisionNeeded += HandleGrandTichuDecisionNeeded;
         _game.Events.OnExchangePhaseStarted     += HandleExchangePhaseStarted;

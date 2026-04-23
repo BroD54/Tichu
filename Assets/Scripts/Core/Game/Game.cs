@@ -6,18 +6,27 @@ using Core.Round;
 
 public class Game
 {
+    private static Game _game; 
     public List<Player> Players { get; }
     public List<Team> Teams { get; }
     public Round CurrentRound { get; private set; }
     public TichuEventBus Events { get; }
     public bool IsOver { get; private set; }
 
-    public Game(List<Player> players, List<Team> teams)
+    private Game(List<Player> players, List<Team> teams)
     {
         Players = players;
         Teams   = teams;
         Events  = new TichuEventBus();
         IsOver  = false;
+    }
+    public static Game GetInstance(List<Player> players, List<Team> teams)
+    {
+        if (_game == null)
+        {
+            _game = new Game(players, teams);
+        }
+        return _game;
     }
 
     public void StartNextRound()
