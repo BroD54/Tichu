@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Core.Card;
 using JetBrains.Annotations;
 
 namespace Core.Round
@@ -17,6 +18,8 @@ namespace Core.Round
         public Trick CurrentTrick { get; internal set; }
         public List<Player> FinishOrder { get; }
         public Dictionary<Player, TichuCall> TichuCalls { get; }
+        
+        public Rank? ActiveWish { get; private set; }
         
         public Action OnRoundComplete { get; set; }
 
@@ -44,6 +47,13 @@ namespace Core.Round
         {
             _currentState.OnExit(this);
             _currentState = _currentState.NextState();
+            _currentState.OnEnter(this);
+        }
+        
+        public void TransitionTo(IRoundState nextState)
+        {
+            _currentState?.OnExit(this);
+            _currentState = nextState;
             _currentState.OnEnter(this);
         }
 
@@ -99,6 +109,16 @@ namespace Core.Round
             
             return GetState<PlayingState>()
                 ?.SubmitMove(this, Players[playerIndex], cardIds) ?? false;
+        }
+        
+        public void SetWish(Rank rank)
+        {
+            ActiveWish = rank;
+        }
+
+        public void ClearWish()
+        {
+            ActiveWish = null;
         }
 
     }

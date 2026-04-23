@@ -38,5 +38,17 @@ namespace Core.Combination
         {
             return false;
         }
+
+        public bool ContainsMahjong()
+        {
+            return Cards.Any(c => c.Rank == Rank.Mahjong);
+        }
+        
+        public bool ContainsRank(Rank rank)
+        {
+            return Cards.Any(c => c.Rank == rank);
+        }
+        
+        
     }
 }

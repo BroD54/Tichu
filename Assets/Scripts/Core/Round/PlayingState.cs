@@ -14,6 +14,8 @@ namespace Core.Round
         CombinationFactory _combinationFactory = new  CombinationFactory();
         
         private bool _waitingForDragonGift = false;
+
+        
         public void OnEnter(Round round)
         {
             Player lead = round.Players.Find(player => player.HasMahjong);
@@ -45,15 +47,19 @@ namespace Core.Round
             }
             else
             {
+                
                 List<Card> cards = cardIds
                     .Select(id => player.Hand.FirstOrDefault(card => card.ToString() == id))
                     .Where(card => card != null)
                     .ToList();
             
                 if(cards.Count != cardIds.Count) return false;
+                
             
                 var combination = _combinationFactory.Create(cards);
                 if (combination == null) return false;
+                
+                if (!SatisfiesWish(round, player, cards)) return false;
             
                 var move = new Move(player, combination);
                 if (!round.CurrentTrick.TryAddMove(move)) return false;
@@ -66,8 +72,12 @@ namespace Core.Round
                     round.FinishOrder.Add(player);
                     round.Events.RaisePlayerFinished(round.Players.IndexOf(player));
                 }
+                
+                if (combination.ContainsMahjong())
+                {
+                    round.TransitionTo(new DeclareWishState(round.CurrentPlayerIndex));                }
             }
-
+            
             AdvanceTurn(round);
             CheckTrickOver(round);
             CheckRoundOver(round);
@@ -191,5 +201,19 @@ namespace Core.Round
                 }
             }
         }
+        
+        private bool SatisfiesWish(Round round, Player player, List<Card> cards)
+        {
+            if (round.ActiveWish == null) return true;
+            Rank wish = round.ActiveWish.Value;
+            
+            bool playerHasWish = player.Hand.Any(c => c.Rank == wish);
+            if (!playerHasWish) return true;
+            
+            bool moveContainsWish = cards.Any(c => c.Rank == wish);
+
+            return moveContainsWish;
+        }
+        
     }
 }

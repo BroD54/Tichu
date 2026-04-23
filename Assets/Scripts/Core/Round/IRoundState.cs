@@ -1,4 +1,4 @@
-namespace Core.Round
+﻿namespace Core.Round
 {
     public interface IRoundState
     {
