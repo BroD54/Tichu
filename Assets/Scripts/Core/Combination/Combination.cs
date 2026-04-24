@@ -41,12 +41,17 @@ namespace Core.Combination
 
         public bool ContainsMahjong()
         {
-            return Cards.Any(c => c.Rank == Rank.Mahjong);
+            return Cards.Any(c => c.Type == CardType.Mahjong);
         }
         
         public bool ContainsRank(Rank rank)
         {
             return Cards.Any(c => c.Rank == rank);
+        }
+        
+        public bool ContainsDog()
+        {
+            return Cards.Any(c => c.Type == CardType.Dog);
         }
         
         

@@ -19,8 +19,11 @@ namespace Core.Round
         public void OnEnter(Round round)
         {
             Player lead = round.Players.Find(player => player.HasMahjong);
-            round.CurrentPlayerIndex = round.Players.IndexOf(lead);
-            round.CurrentTrick = new Trick(lead, new List<Move>());
+            if (lead != null)
+            {
+                round.CurrentPlayerIndex = round.Players.IndexOf(lead);
+                round.CurrentTrick = new Trick(lead, new List<Move>());
+            }
             round.Events.RaiseTurnChanged(round.CurrentPlayerIndex);
         }
 
@@ -55,9 +58,15 @@ namespace Core.Round
             
                 if(cards.Count != cardIds.Count) return false;
                 
-            
+                
                 var combination = _combinationFactory.Create(cards);
                 if (combination == null) return false;
+                
+                if (combination.ContainsDog())
+                {
+                    HandleDog(round, player);
+                    return true;
+                }
                 
                 if (!SatisfiesWish(round, player, cards)) return false;
             
@@ -65,6 +74,7 @@ namespace Core.Round
                 if (!round.CurrentTrick.TryAddMove(move)) return false;
             
                 player.RemoveCards(cards);
+                if (round.ActiveWish != null && cards.Any(c => c.Rank == round.ActiveWish)) round.ClearWish();
                 round.Events.RaiseCardsPlayed(round.Players.IndexOf(player), cardIds);
 
                 if (player.Hand.Count == 0)
@@ -213,6 +223,56 @@ namespace Core.Round
             bool moveContainsWish = cards.Any(c => c.Rank == wish);
 
             return moveContainsWish;
+        }
+        
+        private void HandleDog(Round round, Player player)
+        {
+            int playerIndex = round.Players.IndexOf(player);
+    
+            var dogCard = player.Hand.First(c => c.IsDog);
+            player.RemoveCards(new List<Card> { dogCard });
+            round.Events.RaiseCardsPlayed(playerIndex, new List<string> { dogCard.ToString() });
+
+            Team myTeam = round.Teams.First(team => team.Contains(player));
+            Player teammate = myTeam.Player1 == player ? myTeam.Player2 : myTeam.Player1;
+
+            Player nextLeader;
+            if (teammate.Hand.Count > 0)
+            {
+                nextLeader = teammate;
+            }
+            else
+            {
+                nextLeader = null;
+                for (int i = 1; i < round.Players.Count; i++)
+                {
+                    int index = (playerIndex + i) % round.Players.Count;
+                    if (round.Players[index].Hand.Count > 0)
+                    {
+                        nextLeader = round.Players[index];
+                        break;
+                    }
+                }
+            }
+
+            if (player.Hand.Count == 0 && !round.FinishOrder.Contains(player))
+            {
+                round.FinishOrder.Add(player);
+                round.Events.RaisePlayerFinished(playerIndex);
+            }
+
+            CheckRoundOver(round);
+            if (round.IsInState<FinishedState>()) return;
+
+            if (nextLeader == null)
+            {
+                round.TransitionToNext();
+                return;
+            }
+
+            round.CurrentTrick = new Trick(nextLeader, new List<Move>());
+            round.CurrentPlayerIndex = round.Players.IndexOf(nextLeader);
+            round.Events.RaiseTurnChanged(round.CurrentPlayerIndex);
         }
         
     }
