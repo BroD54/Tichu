@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Core.Card;
 using Core.Events;
 using Core.Game;
 using Core.Player;
@@ -57,5 +58,8 @@ public class Game
 
     public bool SubmitTichuDeclaration(int playerIndex)
         => CurrentRound.SubmitTichuDeclaration(playerIndex);
+    
+    public void SubmitWish(Rank rank)
+        => CurrentRound.SubmitWish(rank);
     
 }

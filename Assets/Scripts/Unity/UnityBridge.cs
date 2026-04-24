@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
+using Core.Card;
 using Core.Game;
 using Core.Player;
+using Core.Round;
 using UnityEngine;
 
 public class UnityBridge : MonoBehaviour
@@ -12,6 +14,7 @@ public class UnityBridge : MonoBehaviour
     [SerializeField] private PlayPanel          playPanel;
     [SerializeField] private ScorePanel         scorePanel;
     [SerializeField] private RoundSummaryPanel  roundSummaryPanel;
+    [SerializeField] private WishPanel wishPanel;
 
     private Game _game;
     private Queue<int> _exchangeQueue;
@@ -43,7 +46,7 @@ public class UnityBridge : MonoBehaviour
         _game.Events.OnPlayerFinished           += HandlePlayerFinished;
         _game.Events.OnRoundScored              += HandleRoundScored;
         _game.Events.OnGameWon                  += HandleGameWon;
-
+        _game.Events.OnWishNeeded               += HandleWishNeeded; 
         _game.StartNextRound();
     }
 
@@ -61,7 +64,10 @@ public class UnityBridge : MonoBehaviour
         _game.Events.OnPlayerFinished           -= HandlePlayerFinished;
         _game.Events.OnRoundScored              -= HandleRoundScored;
         _game.Events.OnGameWon                  -= HandleGameWon;
+        _game.Events.OnWishNeeded               -= HandleWishNeeded;
     }
+    
+    
     
     public void OnGrandTichuClicked(int playerIndex, bool called)
         => _game.SubmitGrandTichuDecision(playerIndex, called);
@@ -83,11 +89,19 @@ public class UnityBridge : MonoBehaviour
         roundSummaryPanel.gameObject.SetActive(false);
         StartCoroutine(StartNextRoundNextFrame());
     }
+    public void OnWishSubmitted(int rank)
+        => _game.SubmitWish((Rank)rank);
 
     private IEnumerator StartNextRoundNextFrame()
     {
         yield return null;
         _game.StartNextRound();
+    }
+    
+    private void HandleWishNeeded(int playerIndex)
+    {
+        playPanel.gameObject.SetActive(false);
+        wishPanel.Show(playerIndex);
     }
     
     private void HandleGrandTichuDecisionNeeded(string playerName, int playerIndex)

@@ -25,6 +25,7 @@ namespace Core.Events
         public event Action<int> OnDragonGiftNeeded;
         public event Action<int> OnPlayerFinished;
         public event Action<int> OnGameWon;
+        public event Action<int> OnWishNeeded; 
         
         public event Action<int, int, int, int> OnRoundScored;
 
@@ -88,5 +89,8 @@ namespace Core.Events
 
         public void RaiseGameWon(int teamIndex)
             => OnGameWon?.Invoke(teamIndex);
+        
+        public void RaiseWishNeeded(int playerIndex)
+            => OnWishNeeded?.Invoke(playerIndex);
     }
 }

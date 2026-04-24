@@ -111,15 +111,11 @@ namespace Core.Round
                 ?.SubmitMove(this, Players[playerIndex], cardIds) ?? false;
         }
         
-        public void SetWish(Rank rank)
-        {
-            ActiveWish = rank;
-        }
+        public void SetWish(Rank rank) { ActiveWish = rank; }
 
-        public void ClearWish()
-        {
-            ActiveWish = null;
-        }
+        public void ClearWish(){ ActiveWish = null; }
+        
+        public void SubmitWish(Rank rank) { GetState<DeclareWishState>()?.DeclareWish(this, rank); }
 
     }
 }

@@ -85,7 +85,9 @@ namespace Core.Round
                 
                 if (combination.ContainsMahjong())
                 {
-                    round.TransitionTo(new DeclareWishState(round.CurrentPlayerIndex));                }
+                    round.TransitionTo(new DeclareWishState(round.CurrentPlayerIndex));
+                    return true;
+                }
             }
             
             AdvanceTurn(round);

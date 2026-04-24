@@ -13,7 +13,7 @@ namespace Core.Round
 
         public void OnEnter(Round round)
         {
-            round.Events.RaiseWishMade(_playerIndex, (int)Rank.Mahjong);
+            round.Events.RaiseWishNeeded(_playerIndex);
         }
 
         public void OnExit(Round round)
