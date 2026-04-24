@@ -8,6 +8,8 @@ namespace Core.Round
         CardExchange,
         Playing,
         Scoring,
-        Finished
+        Finished,
+        DragonGift,
+        Wish
     }
 }

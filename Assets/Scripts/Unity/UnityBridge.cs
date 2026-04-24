@@ -15,6 +15,7 @@ public class UnityBridge : MonoBehaviour
     [SerializeField] private ScorePanel         scorePanel;
     [SerializeField] private RoundSummaryPanel  roundSummaryPanel;
     [SerializeField] private WishPanel wishPanel;
+    [SerializeField] private DragonGiftPanel dragonGiftPanel;
 
     private Game _game;
     private Queue<int> _exchangeQueue;
@@ -46,7 +47,9 @@ public class UnityBridge : MonoBehaviour
         _game.Events.OnPlayerFinished           += HandlePlayerFinished;
         _game.Events.OnRoundScored              += HandleRoundScored;
         _game.Events.OnGameWon                  += HandleGameWon;
-        _game.Events.OnWishNeeded               += HandleWishNeeded; 
+        _game.Events.OnWishNeeded               += HandleWishNeeded;
+        _game.Events.OnDragonGiftNeeded         += HandleDragonGiftNeeded;
+
         _game.StartNextRound();
     }
 
@@ -65,6 +68,7 @@ public class UnityBridge : MonoBehaviour
         _game.Events.OnRoundScored              -= HandleRoundScored;
         _game.Events.OnGameWon                  -= HandleGameWon;
         _game.Events.OnWishNeeded               -= HandleWishNeeded;
+        _game.Events.OnDragonGiftNeeded         -= HandleDragonGiftNeeded;
     }
     
     
@@ -91,6 +95,9 @@ public class UnityBridge : MonoBehaviour
     }
     public void OnWishSubmitted(int rank)
         => _game.SubmitWish((Rank)rank);
+    
+    public void OnDragonGiftSubmitted(int opponentIndex)
+        => _game.SubmitDragonGift(opponentIndex);
 
     private IEnumerator StartNextRoundNextFrame()
     {
@@ -160,6 +167,12 @@ public class UnityBridge : MonoBehaviour
         playPanel.gameObject.SetActive(false);
         roundSummaryPanel.gameObject.SetActive(false);
         scorePanel.Show($"Team {teamIndex + 1} wins!");
+    }
+    
+    private void HandleDragonGiftNeeded(int winnerIndex)
+    {
+        playPanel.gameObject.SetActive(false);
+        dragonGiftPanel.Show(winnerIndex);
     }
 
 

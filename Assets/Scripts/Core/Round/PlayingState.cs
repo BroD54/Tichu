@@ -13,7 +13,6 @@ namespace Core.Round
     {
         CombinationFactory _combinationFactory = new  CombinationFactory();
         
-        private bool _waitingForDragonGift = false;
 
         
         public void OnEnter(Round round)
@@ -85,7 +84,7 @@ namespace Core.Round
                 
                 if (combination.ContainsMahjong())
                 {
-                    round.TransitionTo(new DeclareWishState(round.CurrentPlayerIndex));
+                    round.TransitionTo(RoundStateFactory.CreateWish(round.CurrentPlayerIndex));
                     return true;
                 }
             }
@@ -118,12 +117,11 @@ namespace Core.Round
 
             List<Card> trickCards = round.CurrentTrick.Cards;
 
-            // if (round.CurrentTrick.WonWithDragon)
-            // {
-            //     _waitingForDragonGift = true;
-            //     round.Events.RaiseDragonGiftNeeded(round.Players.IndexOf(winner));
-            //     return;
-            // }
+            if (round.CurrentTrick.WonWithDragon)
+            {
+                round.TransitionTo(RoundStateFactory.CreateDragonGift(winner, trickCards));
+                return;
+            }
 
             AwardTrick(round, winner, trickCards);
         }

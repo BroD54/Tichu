@@ -62,4 +62,7 @@ public class Game
     public void SubmitWish(Rank rank)
         => CurrentRound.SubmitWish(rank);
     
+    public bool SubmitDragonGift(int opponentIndex)
+        => CurrentRound.SubmitDragonGift(opponentIndex);
+    
 }

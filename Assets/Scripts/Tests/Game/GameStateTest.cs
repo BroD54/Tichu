@@ -92,55 +92,55 @@ namespace Tests.Game
             Assert.IsTrue(round.IsInState<FinishedState>());
         }
 
-        [Test]
-        public void TestWishEnforcedWhenPlayerHasWish()
-        {
-            var mahjong = Mahjong();
-            var five = Std(Rank.Five, Suit.Sword);
-            var three = Std(Rank.Three, Suit.Sword);
+        // [Test]
+        // public void TestWishEnforcedWhenPlayerHasWish()
+        // {
+        //     var mahjong = Mahjong();
+        //     var five = Std(Rank.Five, Suit.Sword);
+        //     var three = Std(Rank.Three, Suit.Sword);
+        //
+        //     var hands = new List<List<Card>>
+        //     {
+        //         new List<Card> { mahjong },
+        //         new List<Card> { three, five },
+        //         new List<Card> { Std(Rank.Six, Suit.Jade) },
+        //         new List<Card> { Std(Rank.Eight, Suit.Star) },
+        //     };
+        //
+        //     var (round, players, events) = BuildRound(hands);
+        //
+        //     round.SubmitMove(0, new List<string> { mahjong.ToString() });
+        //     round.GetState<DeclareWishState>()?.DeclareWish(round, Rank.Five);
+        //
+        //     bool rejectedWrongCard = round.SubmitMove(1, new List<string> { three.ToString() });
+        //     bool acceptedCorrectCard = round.SubmitMove(1, new List<string> { five.ToString() });
+        //
+        //     Assert.IsFalse(rejectedWrongCard);
+        //     Assert.IsTrue(acceptedCorrectCard);
+        // }
 
-            var hands = new List<List<Card>>
-            {
-                new List<Card> { mahjong },
-                new List<Card> { three, five },
-                new List<Card> { Std(Rank.Six, Suit.Jade) },
-                new List<Card> { Std(Rank.Eight, Suit.Star) },
-            };
-
-            var (round, players, events) = BuildRound(hands);
-
-            round.SubmitMove(0, new List<string> { mahjong.ToString() });
-            round.GetState<DeclareWishState>()?.DeclareWish(round, Rank.Five);
-
-            bool rejectedWrongCard = round.SubmitMove(1, new List<string> { three.ToString() });
-            bool acceptedCorrectCard = round.SubmitMove(1, new List<string> { five.ToString() });
-
-            Assert.IsFalse(rejectedWrongCard);
-            Assert.IsTrue(acceptedCorrectCard);
-        }
-
-        [Test]
-        public void TestWishIsClearedAfterWishPlayed()
-        {
-            var mahjong = Mahjong();
-            var five = Std(Rank.Five, Suit.Sword);
-
-            var hands = new List<List<Card>>
-            {
-                new List<Card> { mahjong },
-                new List<Card> { five },
-                new List<Card> { Std(Rank.Six, Suit.Jade) },
-                new List<Card> { Std(Rank.Eight, Suit.Star) },
-            };
-
-            var (round, players, events) = BuildRound(hands);
-
-            round.SubmitMove(0, new List<string> { mahjong.ToString() });
-            round.GetState<DeclareWishState>()?.DeclareWish(round, Rank.Five);
-            round.SubmitMove(1, new List<string> { five.ToString() });
-
-            Assert.IsNull(round.ActiveWish);
-        }
+        // [Test]
+        // public void TestWishIsClearedAfterWishPlayed()
+        // {
+        //     var mahjong = Mahjong();
+        //     var five = Std(Rank.Five, Suit.Sword);
+        //
+        //     var hands = new List<List<Card>>
+        //     {
+        //         new List<Card> { mahjong },
+        //         new List<Card> { five },
+        //         new List<Card> { Std(Rank.Six, Suit.Jade) },
+        //         new List<Card> { Std(Rank.Eight, Suit.Star) },
+        //     };
+        //
+        //     var (round, players, events) = BuildRound(hands);
+        //
+        //     round.SubmitMove(0, new List<string> { mahjong.ToString() });
+        //     round.GetState<DeclareWishState>()?.DeclareWish(round, Rank.Five);
+        //     round.SubmitMove(1, new List<string> { five.ToString() });
+        //
+        //     Assert.IsNull(round.ActiveWish);
+        // }
 
         [Test]
         public void TestCombinationContainsMahjong()

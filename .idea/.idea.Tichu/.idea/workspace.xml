@@ -5,14 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6a6f3710-e27c-476f-a957-76970ce2a1ee" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Unity/WishPanel.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Unity/WishPanel.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Round/PassDragonState.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Round/PassDragonState.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Unity/DragonGiftPanel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Unity/DragonGiftPanel.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/main.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Events/TichuEventBus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Events/TichuEventBus.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Game/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Game/Game.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Round/DeclareWishState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Round/DeclareWishState.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Round/PlayingState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Round/PlayingState.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Round/Round.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Round/Round.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Round/RoundPhase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Round/RoundPhase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Round/RoundStateFactory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Round/RoundStateFactory.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Unity/UnityBridge.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Unity/UnityBridge.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
     </list>
@@ -71,6 +73,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/Round/FinishedState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/Round/GrandTichuCallsState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/Round/IRoundState.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/Round/PassDragonState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/Round/PlayingState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/Round/RoundPhase.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Core/Round/RoundStateFactory.cs" root0="FORCE_HIGHLIGHTING" />
@@ -80,6 +83,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Tests/Combination/CombinationFactoryTest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Tests/Combination/CombinationTests.asmdef" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Tests/Observer/ObserverTest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Unity/DragonGiftPanel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Unity/ExchangePanel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Unity/GrandTichuPanel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Unity/HandUI.cs" root0="FORCE_HIGHLIGHTING" />
@@ -273,7 +277,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776991608417</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="added wish in unity ui">
+      <option name="closed" value="true" />
+      <created>1777012284904</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1777012284904</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -311,7 +323,8 @@
     <MESSAGE value="implemented singleton pattern for game and adjusted unity UI" />
     <MESSAGE value="Added Wish implementation" />
     <MESSAGE value="added dog functionality and tests for dog and mahjong" />
-    <option name="LAST_COMMIT_MESSAGE" value="added dog functionality and tests for dog and mahjong" />
+    <MESSAGE value="added wish in unity ui" />
+    <option name="LAST_COMMIT_MESSAGE" value="added wish in unity ui" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

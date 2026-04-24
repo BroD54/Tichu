@@ -116,6 +116,8 @@ namespace Core.Round
         public void ClearWish(){ ActiveWish = null; }
         
         public void SubmitWish(Rank rank) { GetState<DeclareWishState>()?.DeclareWish(this, rank); }
+        
+        public bool SubmitDragonGift(int opponentIndex) { return GetState<PassDragonState>()?.GiftToOpponent(this, opponentIndex) ?? false; }
 
     }
 }
