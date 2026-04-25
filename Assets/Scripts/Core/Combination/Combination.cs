@@ -17,7 +17,7 @@ namespace Core.Combination
             Cards = cards.ToList().AsReadOnly();
         }
 
-        public bool Beats(Combination other)
+        public virtual bool Beats(Combination other)
         {
             if (other == null) return true;
             if (IsBomb && !other.IsBomb) return true;

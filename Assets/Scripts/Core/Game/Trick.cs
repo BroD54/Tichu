@@ -53,6 +53,9 @@ namespace Core.Game
 
             if (!move.Combination.Beats(CurrentCombination)) return false;
             
+            if (move.Combination is Single phoenixSingle && phoenixSingle.Cards[0].IsPhoenix)
+                phoenixSingle.CoverWith(CurrentCombination.Strength);
+            
             CurrentCombination = move.Combination;
             CurrentWinner = move.Player;
             Moves.Add(move);

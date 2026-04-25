@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Core.Combination;
+using UnityEngine;
 
 
 namespace Core.Round
@@ -23,6 +24,17 @@ namespace Core.Round
                 round.CurrentPlayerIndex = round.Players.IndexOf(lead);
                 round.CurrentTrick = new Trick(lead, new List<Move>());
             }
+            else
+            { int start = round.CurrentPlayerIndex;
+                int next = start;
+                do
+                {
+                    next = (next + 1) % round.Players.Count;
+                    if (next == start) break;
+                } while (round.Players[next].Hand.Count == 0);
+
+                round.CurrentPlayerIndex = next;
+            }
             round.Events.RaiseTurnChanged(round.CurrentPlayerIndex);
         }
 
@@ -42,6 +54,11 @@ namespace Core.Round
             var hasPassed = cardIds == null || cardIds.Count == 0;
             if (hasPassed)
             {
+                if (round.ActiveWish != null)
+                {
+                    bool playerHasWish = player.Hand.Any(c => c.Rank == round.ActiveWish);
+                    if (playerHasWish) return false;
+                }
                 var passMove = new Move(player, null);
                 if (!round.CurrentTrick.TryAddMove(passMove)) return false;
                 
@@ -59,6 +76,7 @@ namespace Core.Round
                 
                 
                 var combination = _combinationFactory.Create(cards);
+                Debug.Log($"Combination created: {combination?.GetType().Name ?? "null"}, Type={combination?.Type}, Strength={combination?.Strength}");
                 if (combination == null) return false;
                 
                 if (combination.ContainsDog())
