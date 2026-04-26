@@ -9,6 +9,7 @@ namespace Core.Round
     public class GrandTichuCallsState : IRoundState
     {
         private int _currentIndex = 0;
+        private RoundStateFactory _roundStateFactory = new();
 
         public void OnEnter(Round round)
         {
@@ -22,7 +23,7 @@ namespace Core.Round
 
         public IRoundState NextState()
         {
-            return RoundStateFactory.Create(RoundPhase.DealingRemainingCards);
+            return _roundStateFactory.Create(RoundPhase.DealingRemainingCards);
         }
         
         public bool SubmitDecision(Round round, Player player, bool calledGrandTichu)

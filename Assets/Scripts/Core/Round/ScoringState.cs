@@ -6,6 +6,9 @@ namespace Core.Round
     {
         
         private readonly ScoringService _scoringService = new ScoringService();
+        
+        private RoundStateFactory _roundStateFactory = new();
+
 
         public void OnEnter(Round round)
         {
@@ -48,7 +51,7 @@ namespace Core.Round
 
         public IRoundState NextState()
         {
-            return RoundStateFactory.Create(RoundPhase.Finished);
+            return _roundStateFactory.Create(RoundPhase.Finished);
         }
     }
 }

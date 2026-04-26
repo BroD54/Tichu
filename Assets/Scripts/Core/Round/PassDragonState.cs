@@ -11,6 +11,7 @@ namespace Core.Round
     {
         private Player _winner;
         private List<Card> _trickCards;
+        private RoundStateFactory _roundStateFactory = new();
 
         public PassDragonState(Player winner, List<Card> trickCards)
         {
@@ -29,7 +30,7 @@ namespace Core.Round
 
         public IRoundState NextState()
         {
-            return RoundStateFactory.Create(RoundPhase.Playing);
+            return _roundStateFactory.Create(RoundPhase.Playing);
         }
 
         public bool GiftToOpponent(Round round, int opponentIndex)

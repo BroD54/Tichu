@@ -19,7 +19,6 @@ public class GrandTichuPanel : MonoBehaviour
 
     public void ShowForPlayer(string playerName, int playerIndex)
     {
-        Debug.Log("Panel is active for player: " + playerName);
         gameObject.SetActive(true);
         _currentPlayerIndex  = playerIndex;
         playerNameLabel.text = $"{playerName}: Call Grand Tichu?";

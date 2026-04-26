@@ -22,11 +22,12 @@ namespace Core.Round
         public Rank? ActiveWish { get; private set; }
         
         public Action OnRoundComplete { get; set; }
-
         
         public TichuEventBus Events { get; }
         
         private IRoundState _currentState;
+        
+        private RoundStateFactory _roundStateFactory = new();
         
         public Round(List<Player> players, List<Team> teams, Deck deck, TichuEventBus events)
         {
@@ -39,7 +40,7 @@ namespace Core.Round
             CurrentTrick = null;
             Events = events;
             
-            _currentState = RoundStateFactory.Create(RoundPhase.DealingFirstCards);
+            _currentState = _roundStateFactory.Create(RoundPhase.DealingFirstCards);
             _currentState.OnEnter(this);
         }
 

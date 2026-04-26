@@ -13,8 +13,7 @@ namespace Core.Round
     public class PlayingState : IRoundState
     {
         CombinationFactory _combinationFactory = new  CombinationFactory();
-        
-
+        private RoundStateFactory _roundStateFactory = new();
         
         public void OnEnter(Round round)
         {
@@ -44,7 +43,7 @@ namespace Core.Round
 
         public IRoundState NextState()
         {
-            return RoundStateFactory.Create(RoundPhase.Scoring);
+            return _roundStateFactory.Create(RoundPhase.Scoring);
         }
 
         public bool SubmitMove(Round round, Player player, List<string> cardIds)
@@ -76,7 +75,6 @@ namespace Core.Round
                 
                 
                 var combination = _combinationFactory.Create(cards);
-                Debug.Log($"Combination created: {combination?.GetType().Name ?? "null"}, Type={combination?.Type}, Strength={combination?.Strength}");
                 if (combination == null) return false;
                 
                 if (combination.ContainsDog())
@@ -102,7 +100,7 @@ namespace Core.Round
                 
                 if (combination.ContainsMahjong())
                 {
-                    round.TransitionTo(RoundStateFactory.CreateWish(round.CurrentPlayerIndex));
+                    round.TransitionTo(_roundStateFactory.CreateWish(round.CurrentPlayerIndex));
                     return true;
                 }
             }
@@ -137,7 +135,7 @@ namespace Core.Round
 
             if (round.CurrentTrick.WonWithDragon)
             {
-                round.TransitionTo(RoundStateFactory.CreateDragonGift(winner, trickCards));
+                round.TransitionTo(_roundStateFactory.CreateDragonGift(winner, trickCards));
                 return;
             }
 

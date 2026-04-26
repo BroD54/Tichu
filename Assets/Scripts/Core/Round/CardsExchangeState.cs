@@ -8,6 +8,7 @@ namespace Core.Round
     public class CardsExchangeState : IRoundState
     {
         private readonly Dictionary<Player, List<Card>> _pendingExchanges = new();
+        private RoundStateFactory _roundStateFactory = new();
         
         public void OnEnter(Round round)
         {
@@ -35,7 +36,7 @@ namespace Core.Round
 
         public IRoundState NextState()
         {
-            return RoundStateFactory.Create(RoundPhase.Playing);
+            return _roundStateFactory.Create(RoundPhase.Playing);
         }
 
         public bool SubmitExchange(Round round, Player player, List<string> cardIds)

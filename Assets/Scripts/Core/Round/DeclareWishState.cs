@@ -5,7 +5,8 @@ namespace Core.Round
     public class DeclareWishState : IRoundState
     {
         private int _playerIndex;
-
+        private RoundStateFactory _roundStateFactory = new();
+        
         public DeclareWishState(int playerIndex)
         {
             _playerIndex = playerIndex;
@@ -22,7 +23,7 @@ namespace Core.Round
 
         public IRoundState NextState()
         {
-            return RoundStateFactory.Create(RoundPhase.Playing);
+            return _roundStateFactory.Create(RoundPhase.Playing);
         }
 
         public void DeclareWish(Round round, Rank rank)

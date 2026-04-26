@@ -16,9 +16,7 @@ public class CardUI : MonoBehaviour
         _button     = GetComponent<Button>();
         _background = GetComponent<Image>();
         _label      = GetComponentInChildren<TMP_Text>();
-
-        Debug.Log($"CardUI Awake — button={_button}, background={_background}, label={_label}");
-
+        
         _button.onClick.AddListener(OnClicked);
     }
 
@@ -93,6 +91,5 @@ public class CardUI : MonoBehaviour
     {
         IsSelected = !IsSelected;
         _background.color = IsSelected ? Color.cornsilk : Color.white;
-        Debug.Log($"Card clicked: {CardId}, IsSelected: {IsSelected}, this.GetInstanceID(): {GetInstanceID()}");
     }
 }

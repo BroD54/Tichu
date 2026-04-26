@@ -46,8 +46,6 @@ namespace Core.Events
 
         public void RaiseGrandTichuDecisionNeeded(string playerName, int playerIndex)
         {
-            Debug.Log($"Raise EventBus instance: {this.GetHashCode()}");
-            Debug.Log("Need decision from" +  playerName);
             OnGrandTichuDecisionNeeded?.Invoke(playerName, playerIndex);
         }
 

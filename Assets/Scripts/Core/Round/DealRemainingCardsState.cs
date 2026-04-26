@@ -5,6 +5,8 @@ namespace Core.Round
 {
     public class DealRemainingCardsState : IRoundState
     {
+        private RoundStateFactory _roundStateFactory = new();
+
         public void OnEnter(Round round)
         {
             round.Deck.Deal(round.Players, Deck.SecondDealCount);
@@ -18,7 +20,7 @@ namespace Core.Round
 
         public IRoundState NextState()
         {  
-            return RoundStateFactory.Create(RoundPhase.CardExchange);
+            return _roundStateFactory.Create(RoundPhase.CardExchange);
         }
     }
 }

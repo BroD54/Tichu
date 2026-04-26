@@ -6,7 +6,8 @@ namespace Core.Round
 {
     public class DealingFirstCardsState : IRoundState
     {
-
+        private RoundStateFactory _roundStateFactory = new();
+        
         public void OnEnter(Round round)
         {
             round.Deck.Deal(round.Players, Deck.FirstDealCount);
@@ -21,7 +22,7 @@ namespace Core.Round
 
         public IRoundState NextState()
         {
-            return RoundStateFactory.Create(RoundPhase.GrandTichuCalls);
+            return _roundStateFactory.Create(RoundPhase.GrandTichuCalls);
         }
     }
 }

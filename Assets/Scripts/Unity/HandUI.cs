@@ -34,7 +34,6 @@ public class HandUI : MonoBehaviour
             _cards.Add(card);
         }
 
-        Debug.Log($"ShowHand built {_cards.Count} cards");
     }
 
     public void SetInteractable(bool interactable)
@@ -45,9 +44,6 @@ public class HandUI : MonoBehaviour
 
     public List<string> GetSelectedCardIds()
     {
-        foreach (var card in _cards)
-            Debug.Log($"Card in list: {card.CardId}, IsSelected: {card.IsSelected}, ID: {card.GetInstanceID()}");
-    
         return _cards.Where(c => c.IsSelected).Select(c => c.CardId).ToList();
     }
     
