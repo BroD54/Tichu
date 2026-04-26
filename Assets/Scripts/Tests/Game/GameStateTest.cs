@@ -47,6 +47,8 @@ namespace Tests.Game
 
         private Card Dog() => new Card(Suit.Jade, CardType.Dog);
         private Card Mahjong() => new Card(Rank.Mahjong, Suit.Jade, CardType.Mahjong);
+        private Card Dragon() => new Card(Suit.Jade, CardType.Dragon);
+        private Card Phoenix() => new Card(Suit.Jade, CardType.Phoenix);
         private Card Std(Rank r, Suit s = Suit.Jade) => new Card(r, s, CardType.Standard);
 
         [Test]
@@ -92,55 +94,55 @@ namespace Tests.Game
             Assert.IsTrue(round.IsInState<FinishedState>());
         }
 
-        // [Test]
-        // public void TestWishEnforcedWhenPlayerHasWish()
-        // {
-        //     var mahjong = Mahjong();
-        //     var five = Std(Rank.Five, Suit.Sword);
-        //     var three = Std(Rank.Three, Suit.Sword);
-        //
-        //     var hands = new List<List<Card>>
-        //     {
-        //         new List<Card> { mahjong },
-        //         new List<Card> { three, five },
-        //         new List<Card> { Std(Rank.Six, Suit.Jade) },
-        //         new List<Card> { Std(Rank.Eight, Suit.Star) },
-        //     };
-        //
-        //     var (round, players, events) = BuildRound(hands);
-        //
-        //     round.SubmitMove(0, new List<string> { mahjong.ToString() });
-        //     round.GetState<DeclareWishState>()?.DeclareWish(round, Rank.Five);
-        //
-        //     bool rejectedWrongCard = round.SubmitMove(1, new List<string> { three.ToString() });
-        //     bool acceptedCorrectCard = round.SubmitMove(1, new List<string> { five.ToString() });
-        //
-        //     Assert.IsFalse(rejectedWrongCard);
-        //     Assert.IsTrue(acceptedCorrectCard);
-        // }
+        [Test]
+        public void TestWishEnforcedWhenPlayerHasWish()
+        {
+            var mahjong = Mahjong();
+            var five = Std(Rank.Five, Suit.Sword);
+            var three = Std(Rank.Three, Suit.Sword);
+        
+            var hands = new List<List<Card>>
+            {
+                new List<Card> { mahjong },
+                new List<Card> { three, five },
+                new List<Card> { Std(Rank.Six, Suit.Jade) },
+                new List<Card> { Std(Rank.Eight, Suit.Star) },
+            };
+        
+            var (round, players, events) = BuildRound(hands);
+        
+            round.SubmitMove(0, new List<string> { mahjong.ToString() });
+            round.GetState<DeclareWishState>()?.DeclareWish(round, Rank.Five);
+        
+            bool rejectedWrongCard = round.SubmitMove(1, new List<string> { three.ToString() });
+            bool acceptedCorrectCard = round.SubmitMove(1, new List<string> { five.ToString() });
+        
+            Assert.IsFalse(rejectedWrongCard);
+            Assert.IsTrue(acceptedCorrectCard);
+        }
 
-        // [Test]
-        // public void TestWishIsClearedAfterWishPlayed()
-        // {
-        //     var mahjong = Mahjong();
-        //     var five = Std(Rank.Five, Suit.Sword);
-        //
-        //     var hands = new List<List<Card>>
-        //     {
-        //         new List<Card> { mahjong },
-        //         new List<Card> { five },
-        //         new List<Card> { Std(Rank.Six, Suit.Jade) },
-        //         new List<Card> { Std(Rank.Eight, Suit.Star) },
-        //     };
-        //
-        //     var (round, players, events) = BuildRound(hands);
-        //
-        //     round.SubmitMove(0, new List<string> { mahjong.ToString() });
-        //     round.GetState<DeclareWishState>()?.DeclareWish(round, Rank.Five);
-        //     round.SubmitMove(1, new List<string> { five.ToString() });
-        //
-        //     Assert.IsNull(round.ActiveWish);
-        // }
+        [Test]
+        public void TestWishIsClearedAfterWishPlayed()
+        {
+            var mahjong = Mahjong();
+            var five = Std(Rank.Five, Suit.Sword);
+        
+            var hands = new List<List<Card>>
+            {
+                new List<Card> { mahjong },
+                new List<Card> { five },
+                new List<Card> { Std(Rank.Six, Suit.Jade) },
+                new List<Card> { Std(Rank.Eight, Suit.Star) },
+            };
+        
+            var (round, players, events) = BuildRound(hands);
+        
+            round.SubmitMove(0, new List<string> { mahjong.ToString() });
+            round.GetState<DeclareWishState>()?.DeclareWish(round, Rank.Five);
+            round.SubmitMove(1, new List<string> { five.ToString() });
+        
+            Assert.IsNull(round.ActiveWish);
+        }
 
         [Test]
         public void TestCombinationContainsMahjong()
@@ -153,6 +155,78 @@ namespace Tests.Game
 
             Combination combo = new Pair(cards, 1);
             Assert.True(combo.ContainsMahjong());
+        }
+        
+        [Test]
+        public void TestDeclareWishStateSetWishAndTransitions()
+        {
+            var mahjong = Mahjong();
+            var hands = new List<List<Card>>
+            {
+                new List<Card> { mahjong },
+                new List<Card> { Std(Rank.Five, Suit.Sword) },
+                new List<Card> { Std(Rank.Six, Suit.Jade) },
+                new List<Card> { Std(Rank.Eight, Suit.Star) },
+            };
+
+            var (round, players, events) = BuildRound(hands);
+
+            round.SubmitMove(0, new List<string> { mahjong.ToString() });
+
+            var wishState = round.GetState<DeclareWishState>();
+            Assert.IsNotNull(wishState);
+
+            wishState.DeclareWish(round, Rank.King);
+
+            Assert.AreEqual(Rank.King, round.ActiveWish);
+            Assert.IsTrue(round.IsInState<PlayingState>());
+        }
+
+        [Test]
+        public void TestDeclareWishStateRaisesWishMadeEvent()
+        {
+            var mahjong = Mahjong();
+            var hands = new List<List<Card>>
+            {
+                new List<Card> { mahjong },
+                new List<Card> { Std(Rank.Five, Suit.Sword) },
+                new List<Card> { Std(Rank.Six, Suit.Jade) },
+                new List<Card> { Std(Rank.Eight, Suit.Star) },
+            };
+
+            var (round, players, events) = BuildRound(hands);
+
+            round.SubmitMove(0, new List<string> { mahjong.ToString() });
+
+            int wishRankReceived = -1;
+            events.OnWishMade += (playerIndex, rank) => wishRankReceived = rank;
+
+            round.GetState<DeclareWishState>()?.DeclareWish(round, Rank.Queen);
+
+            Assert.AreEqual((int)Rank.Queen, wishRankReceived);
+        }
+
+        [Test]
+        public void TestStandardCardCannotBeatPhoenix()
+        {
+            var phoenix = Phoenix();
+            var ace = Std(Rank.Ace, Suit.Sword);
+            var hands = new List<List<Card>>
+            {
+                new List<Card> { Mahjong(), phoenix },
+                new List<Card> { ace },
+                new List<Card> { Std(Rank.Six, Suit.Jade) },
+                new List<Card> { Std(Rank.Eight, Suit.Star) },
+            };
+
+            var (round, players, events) = BuildRound(hands);
+
+            round.SubmitMove(0, new List<string> { Mahjong().ToString() });
+            round.SubmitMove(0, new List<string> { phoenix.ToString() });
+
+            bool rejected = round.SubmitMove(1, new List<string> { ace.ToString() });
+
+            Assert.IsFalse(rejected);
         }
     }
 }

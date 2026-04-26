@@ -214,17 +214,17 @@ namespace Tests.Observer
         public void PlayerPassed_IsFired_WhenPassSubmitted()
         {
             var round = BuildRoundInPlayingState();
-
+        
             var leadIndex = round.CurrentPlayerIndex;
             var cardId = round.Players[leadIndex].Hand
                 .First(c => !c.IsDog).ToString();
             round.SubmitMove(leadIndex, new List<string> { cardId });
-
+        
             int passedIndex = -1;
             round.Events.OnPlayerPassed += idx => passedIndex = idx;
-
+        
             round.SubmitMove(round.CurrentPlayerIndex, null);
-
+        
             Assert.That(passedIndex, Is.EqualTo((leadIndex + 1) % 4));
         }
 

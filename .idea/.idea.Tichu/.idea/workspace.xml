@@ -5,13 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6a6f3710-e27c-476f-a957-76970ce2a1ee" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/MethodCoverage.htm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MethodCoverageImage.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Tichu/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Tichu/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/main.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Combination/Combination.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Combination/Combination.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Combination/Single.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Combination/Single.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Game/Trick.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Game/Trick.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Round/PlayingState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Round/PlayingState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tests/Game/GameStateTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Tests/Game/GameStateTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Tests/Observer/ObserverTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Tests/Observer/ObserverTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Settings/UniversalRP.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Settings/UniversalRP.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/UniversalRenderPipelineGlobalSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/UniversalRenderPipelineGlobalSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/GraphicsSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,6 +93,8 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Unity/UnityBridge.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Unity/WishPanel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/UniversalRenderPipelineGlobalSettings.asset" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.testtools.codecoverage@19a841221620/Editor/ReportGenerator/CoverageReportGenerator.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@bb329a87fcdc/Runtime/TMP/TMP_PackageResourceImporter.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
@@ -288,7 +295,15 @@
       <option name="project" value="LOCAL" />
       <updated>1777058669011</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="added single play functionality for pheonix and fixed bugs with mahjong">
+      <option name="closed" value="true" />
+      <created>1777156679754</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1777156679754</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -328,7 +343,8 @@
     <MESSAGE value="added dog functionality and tests for dog and mahjong" />
     <MESSAGE value="added wish in unity ui" />
     <MESSAGE value="Added Dragon Gift functionality and UI elements. Updated RoundStateFactory.cs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added Dragon Gift functionality and UI elements. Updated RoundStateFactory.cs" />
+    <MESSAGE value="added single play functionality for pheonix and fixed bugs with mahjong" />
+    <option name="LAST_COMMIT_MESSAGE" value="added single play functionality for pheonix and fixed bugs with mahjong" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

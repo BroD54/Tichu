@@ -124,3 +124,10 @@
 ### Double Victory
 - Winning team scores 200 points  
 - Opponents get 0 points  
+
+
+### Method Coverage
+
+![Method Coverage Screenshot](MethodCoverageImage.png)
+
+[Link to Coverage Details](MethodCoverage.htm)
